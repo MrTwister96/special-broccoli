@@ -22,7 +22,7 @@
             <ul class="list-group list-group-flush">
                 {% for gemeente in context.gemeentes %}
                 <li class="list-group-item lead">
-                    <a href="{% url 'gemeente_view' gemeente.pk %}">{{ gemeente.naam }}</a> 
+                    <a href="{% url 'gemeente_view' gemeente.slug %}">{{ gemeente.naam }}</a> 
                     <span class="badge badge-secondary float-right">{{ gemeente.preek_count }}</span>
                 </li>
                 {% endfor %}

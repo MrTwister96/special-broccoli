@@ -43,8 +43,8 @@ class ArgiefView(View):
 class GemeenteView(View):
     template_name = 'general/gemeente_view.html'
 
-    def get(self, request, pk):
-        gemeente = Gemeente.objects.get(pk=pk)
+    def get(self, request, slug):
+        gemeente = Gemeente.objects.get(slug=slug)
 
         
 
@@ -74,8 +74,6 @@ class GemeenteView(View):
         }
 
         return render(request, self.template_name, {'context': context})
-
-
 
 
 
