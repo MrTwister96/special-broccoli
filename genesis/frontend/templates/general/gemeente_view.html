@@ -20,7 +20,7 @@
             <ul class="list-group list-group-flush text-muted">
                 {% for reeks in context.reekse %}
                 <li class="list-group-item">
-                    <a href="">{{ reeks.naam }}</a> 
+                    <a href="{% url 'gemeente_view' context.gemeente.slug %}?q={{reeks.naam}}">{{ reeks.naam }}</a> 
                     <span class="badge badge-secondary float-right">{{ reeks.preek_count }}</span>
                 </li>
                 {% empty %}
