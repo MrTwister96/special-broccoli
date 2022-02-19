@@ -23,6 +23,7 @@ class Prediker(models.Model):
 
 class Gemeente(models.Model):
     naam = models.CharField(verbose_name="Gemeente Naam", max_length=50)
+    slug = models.SlugField(verbose_name="Gemeente Slug", max_length=50)
     prediker = models.ForeignKey("Prediker", on_delete=models.CASCADE)
     adres = models.CharField(verbose_name="Adres", max_length=100, blank=True, null=True)
     webwerf = models.URLField(verbose_name="Webwerf", max_length=100, blank=True, null=True)
