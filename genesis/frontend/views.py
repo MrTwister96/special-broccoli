@@ -21,7 +21,11 @@ class HomeView(View):
 
     def get(self, request):
 
-        return render(request, self.template_name)
+        context = {
+            'gemeentes': Gemeente.objects.all()
+        }
+
+        return render(request, self.template_name, {'context': context})
 
 class ArgiefView(View):
     template_name = 'argief.html'
