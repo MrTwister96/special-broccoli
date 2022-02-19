@@ -68,6 +68,7 @@ class Preek(models.Model):
     tema = models.CharField(verbose_name="Tema", max_length=200)
     skriflesing = models.CharField(verbose_name="Skriflesing", max_length=200)
     audio_file = models.FileField(verbose_name="Audio File" ,upload_to=audio_path)
+    downloads = models.IntegerField(verbose_name="downloads", default=0)
 
     class Meta:
         ordering = ["-datum"]
