@@ -21,7 +21,7 @@ urlpatterns = [
     # User Views
     path('', HomeView.as_view(), name='home'),
     path('argief/', ArgiefView.as_view(), name='argief'),
-    path('gemeente/<pk>/', GemeenteView.as_view(), name='gemeente_view'),
+    path('gemeente/<slug>/', GemeenteView.as_view(), name='gemeente_view'),
 
 
 
