@@ -57,7 +57,8 @@ class GemeenteView(View):
                 Q(tema__icontains=query) |
                 Q(skriflesing__icontains=query) |
                 Q(prediker__naam__icontains=query) |
-                Q(prediker__van__icontains=query)
+                Q(prediker__van__icontains=query) |
+                Q(reeks__naam=query)
             )
 
         preke_paginator = Paginator(preke, 20)
