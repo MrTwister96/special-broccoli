@@ -22,7 +22,8 @@ class HomeView(View):
     def get(self, request):
 
         context = {
-            'gemeentes': Gemeente.objects.all()
+            'gemeentes': Gemeente.objects.all(),
+            'preek_count': Preek.objects.all().count()
         }
 
         return render(request, self.template_name, {'context': context})
