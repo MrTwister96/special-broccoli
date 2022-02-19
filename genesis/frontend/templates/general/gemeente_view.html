@@ -86,7 +86,7 @@
                         
                         <div class="row">
                             <div class="col text-center">
-                                <a class="btn btn-success" href="{{ preek.audio_file.url }}" download="{{ preek.tema }}">Download</a>
+                                <a class="btn btn-success" href="{% url 'download_preek' preek.id %}">Download</a>
                             </div>
                             <div class="col text-center">
                                 <a class="btn btn-secondary" href="{{ preek.audio_file.url }}" target="_blank">Luister</a>

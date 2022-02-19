@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.urls import path
 
-from frontend.views import HomeView, ArgiefView, NewPreekView, AdministrationView, NewReeksView, NewPredikerView, DeletePreekView, DeleteReeksView, ListPreekView, ListReeksView, ListPredikerView, GemeenteView
+from frontend.views import download_preek, HomeView, ArgiefView, NewPreekView, AdministrationView, NewReeksView, NewPredikerView, DeletePreekView, DeleteReeksView, ListPreekView, ListReeksView, ListPredikerView, GemeenteView
 
 urlpatterns = [
     # User Views
     path('', HomeView.as_view(), name='home'),
     path('argief/', ArgiefView.as_view(), name='argief'),
     path('gemeente/<slug>/', GemeenteView.as_view(), name='gemeente_view'),
+    path('download_preek/<id>/', download_preek, name='download_preek'),
 
 
 
