@@ -78,6 +78,10 @@ class Preek(models.Model):
     def __str__(self):
         return f"{self.tema}"
     
+    def download_preek(self):
+        self.downloads += 1
+        self.save()
+    
 @receiver(models.signals.post_delete, sender=Preek)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """

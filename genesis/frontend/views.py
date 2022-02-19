@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.shortcuts import redirect
 
 from backend.models import Gemeente, Prediker, Reeks, Preek
 from frontend.forms import PreekForm, ReeksForm, PredikerForm
@@ -76,9 +77,13 @@ class GemeenteView(View):
         return render(request, self.template_name, {'context': context})
 
 
+def download_preek(request, id):
+    preek = Preek.objects.get(id=id)
+    preek.download_preek()
 
-
-
+    response = HttpResponse(preek.audio_file, content_type='text/plain')
+    response['Content-Disposition'] = f'attachment; filename={preek.tema}.mp3'
+    return response
 
 # Administration Views
 class Administration(LoginRequiredMixin, View):
