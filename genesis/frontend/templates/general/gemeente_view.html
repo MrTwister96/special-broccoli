@@ -72,7 +72,7 @@
             <ul class="list-group">
                 {% for preek in context.preke.object_list %}
                 <li class="list-group-item preek-item" data-toggle="collapse" data-target="#preek{{preek.id}}" aria-expanded="false" aria-controls="preek{{preek.id}}" style="cursor: pointer;">
-                    <i class="bi bi-chevron-down"></i> {{ preek.datum|date:"Y/m/d" }} {{ preek.datum|time:"G:i A" }} - {{ preek.prediker.titel }} {{ preek.prediker.naam }} {{ preek.prediker.van }}
+                    <i class="bi bi-chevron-down"></i> {{ preek.datum|date:"d M Y" }} {{ preek.datum|time:"G:i A" }} - {{ preek.prediker.titel }} {{ preek.prediker.naam }} {{ preek.prediker.van }}
                 </li>
                 <div class="collapse" id="preek{{preek.id}}">
                     <div class="card card-body">
