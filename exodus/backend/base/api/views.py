@@ -36,7 +36,7 @@ class CongregationViewSet(viewsets.ModelViewSet):
         if self.action in edit_actions:
             permission_classes = [IsAuthenticated]
         else:
-            permission_classes = [IsAuthenticatedOrReadOnly]
+            permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
 class SermonViewSet(viewsets.ModelViewSet):
