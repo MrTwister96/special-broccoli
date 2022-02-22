@@ -29,9 +29,9 @@ class Sermon(models.Model):
     theme = models.CharField(verbose_name="Theme", max_length=200)
     scripture = models.CharField(verbose_name="Scripture", max_length=200)
     download_count = models.IntegerField(verbose_name="Download Count", default=0)
-    congregation = models.ForeignKey("Congregation", on_delete=models.SET_NULL, blank=True, null=True)
-    preacher = models.ForeignKey("Preacher", on_delete=models.DO_NOTHING)
-    series = models.ForeignKey("Series", on_delete=models.DO_NOTHING, blank=True, null=True)
+    congregation = models.ForeignKey("Congregation", on_delete=models.SET_NULL, blank=True, null=True, related_name="sermons")
+    preacher = models.ForeignKey("Preacher", on_delete=models.DO_NOTHING, related_name="sermons")
+    series = models.ForeignKey("Series", on_delete=models.DO_NOTHING, blank=True, null=True, related_name="sermons")
     series_index = models.IntegerField(verbose_name="Series Index", blank=True, null=True)
     audio_file = models.FileField(verbose_name="Audio File" ,upload_to=audio_path)
     
@@ -56,7 +56,7 @@ class Preacher(models.Model):
     title = models.CharField(verbose_name="Title", max_length=10, choices=TITLE_CHOICES)
     name = models.CharField(verbose_name="Name", max_length=50)
     surname = models.CharField(verbose_name="Surname", max_length=50)
-    congregation = models.ForeignKey("Congregation", on_delete=models.SET_NULL, blank=True, null=True)
+    congregation = models.ForeignKey("Congregation", on_delete=models.SET_NULL, blank=True, null=True, related_name="preachers")
     email = models.EmailField(verbose_name='Email', max_length=50, blank=True, null=True)
     contact_number = PhoneNumberField(verbose_name='Contact Number', blank=True)
 
@@ -71,7 +71,7 @@ class Preacher(models.Model):
 class Series(models.Model):
     name = models.CharField(verbose_name="Series Name", max_length=50)
     description = models.TextField(verbose_name="Series Description", max_length=1000)
-    congregation = models.ForeignKey("Congregation", on_delete=models.SET_NULL, blank=True, null=True)
+    congregation = models.ForeignKey("Congregation", on_delete=models.SET_NULL, blank=True, null=True, related_name="series")
 
     class Meta:
         ordering = ['name']
