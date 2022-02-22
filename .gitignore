@@ -133,3 +133,4 @@ dmypy.json
 */media/preke
 */*/migrations/0*
 .DS_Store
+**/settings.py
