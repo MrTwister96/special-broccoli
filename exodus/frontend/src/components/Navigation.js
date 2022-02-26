@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import NavigationContext from "../context/NavigationContext";
 import EGKlankLogo from "../images/EGKlankLogo.svg";
+import { useHistory } from 'react-router-dom';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -13,6 +14,7 @@ function classNames(...classes) {
 const Navigation = () => {
     let { user, logoutUser } = useContext(AuthContext);
     let { navLinks } = useContext(NavigationContext);
+    const history = useHistory();
 
     return (
         <Disclosure as="nav" className="bg-gray-800">
@@ -42,14 +44,16 @@ const Navigation = () => {
                             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="flex-shrink-0 flex items-center">
                                     <img
-                                        className="block lg:hidden h-8 w-auto"
+                                        className="cursor-pointer block lg:hidden h-8 w-auto"
                                         src={EGKlankLogo}
                                         alt="Logo"
+                                        onClick={() => history.push("/")}
                                     />
                                     <img
-                                        className="hidden lg:block h-8 w-auto"
+                                        className="cursor-pointer hidden lg:block h-8 w-auto"
                                         src={EGKlankLogo}
                                         alt="Logo"
+                                        onClick={() => history.push("/")}
                                     />
                                 </div>
                                 <div className="hidden sm:block sm:ml-6">
