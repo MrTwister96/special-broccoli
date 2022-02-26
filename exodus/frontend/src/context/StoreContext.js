@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import useAxios from "../utils/useAxios";
+import { baseURL } from "../utils/useAxios";
+import axios from "axios";
 
 const StoreContext = createContext();
 
@@ -18,10 +19,9 @@ export const StoreProvider = ({ children }) => {
     ]);
     const [sermons, setSermons] = useState([]);
     const [series, setSeries] = useState([]);
-    const api = useAxios();
 
     const getCongregations = async () => {
-        let response = await api.get("/api/congregations/");
+        let response = await axios.get(`${baseURL}/api/congregations/`);
 
         if (response.status == 200) {
             let backendItems = response.data;
@@ -36,7 +36,7 @@ export const StoreProvider = ({ children }) => {
     };
 
     const getPreachers = async () => {
-        let response = await api.get("/api/preachers/");
+        let response = await axios.get(`${baseURL}/api/preachers/`);
 
         if (response.status == 200) {
             let backendItems = response.data;
@@ -51,7 +51,7 @@ export const StoreProvider = ({ children }) => {
     };
 
     const getSermons = async () => {
-        let response = await api.get("/api/sermons/");
+        let response = await axios.get(`${baseURL}/api/sermons/`);
 
         if (response.status == 200) {
             setSermons(response.data);
@@ -59,7 +59,7 @@ export const StoreProvider = ({ children }) => {
     };
 
     const getSeries = async () => {
-        let response = await api.get("/api/series/");
+        let response = await axios.get(`${baseURL}/api/series/`);
 
         if (response.status == 200) {
             setSeries(response.data);
@@ -67,9 +67,9 @@ export const StoreProvider = ({ children }) => {
     };
 
     const addSermon = (sermon) => {
-        let newSermons = [...sermons, sermon]
-        setSermons(newSermons)
-    }
+        let newSermons = [...sermons, sermon];
+        setSermons(newSermons);
+    };
 
     useEffect(() => {
         getCongregations();
