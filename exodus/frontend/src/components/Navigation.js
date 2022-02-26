@@ -44,12 +44,12 @@ const Navigation = () => {
                                     <img
                                         className="block lg:hidden h-8 w-auto"
                                         src={EGKlankLogo}
-                                        alt="SVG as an image"
+                                        alt="Logo"
                                     />
                                     <img
                                         className="hidden lg:block h-8 w-auto"
                                         src={EGKlankLogo}
-                                        alt="SVG as an image"
+                                        alt="Logo"
                                     />
                                 </div>
                                 <div className="hidden sm:block sm:ml-6">
@@ -162,7 +162,7 @@ const Navigation = () => {
                                                 </Menu.Item> */}
                                                 <Menu.Item>
                                                     {({ active }) => (
-                                                        <a
+                                                        <p
                                                             className={classNames(
                                                                 active
                                                                     ? "bg-gray-100"
@@ -172,7 +172,7 @@ const Navigation = () => {
                                                             onClick={logoutUser}
                                                         >
                                                             Sign out
-                                                        </a>
+                                                        </p>
                                                     )}
                                                 </Menu.Item>
                                             </Menu.Items>
