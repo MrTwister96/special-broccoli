@@ -1,37 +1,40 @@
-import React, { useContext, useEffect, useState } from "react";
-import AuthContext from "../context/AuthContext";
+import { useContext, useEffect } from "react";
+import NavigationContext from "../context/NavigationContext";
+import AuthContext from '../context/AuthContext';
 
-import useAxios from "../utils/useAxios";
+function classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+}
 
 const ProfilePage = () => {
     let { user } = useContext(AuthContext);
-    const [congregations, setCongregations] = useState([])
-
-    const api = useAxios()
+    const { setAllLinksInactive } = useContext(NavigationContext);
 
     useEffect(() => {
-        getCongregations()
-    }, [])
-
-    const getCongregations = async () => {
-        let response = await api.get('/api/congregations/')
-
-        if (response.status == 200) {
-            setCongregations(response.data)
-            console.log("Congregations: ", response.data)
-        }
-    }
+        setAllLinksInactive();
+    }, []);
 
     return (
-        <div>
-            <h1>Hello {user.username}!</h1>
-            <ul>
-                
-            {congregations.map(congregation => (
-                <li key={congregation.id}>{congregation.name}</li>
-            ))}
-            </ul>
-        </div>
+        <>
+            <div className="min-h-full">
+                <header className="bg-white shadow">
+                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <h1 className="text-3xl font-bold text-gray-900">
+                            Profile Page ({user.username})
+                        </h1>
+                    </div>
+                </header>
+                <main>
+                    <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                        {/* Replace with your content */}
+                        <div className="px-4 py-6 sm:px-0">
+                            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
+                        </div>
+                        {/* /End replace */}
+                    </div>
+                </main>
+            </div>
+        </>
     );
 };
 

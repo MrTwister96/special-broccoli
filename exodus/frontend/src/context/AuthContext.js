@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
         setAuthTokens(null);
         setUser(null);
         localStorage.removeItem("authTokens");
-        history.push("/login");
+        history.push("/");
     };
 
     useEffect(() => {
