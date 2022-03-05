@@ -1,10 +1,13 @@
+from email.mime import image
 from django.db import models
 from uuid import uuid4
 from phonenumber_field.modelfields import PhoneNumberField
 from django.dispatch import receiver
 import os
 
-# Create your models here.
+def image_path(instance, filename):
+    return f'images/{str(uuid4())}_{filename}'
+
 class Congregation(models.Model):
     name = models.CharField(verbose_name='Congregation Name', max_length=50)
     slug = models.SlugField(verbose_name='Congregation Slug', unique=True, max_length=50)
@@ -13,6 +16,7 @@ class Congregation(models.Model):
     facebook_page = models.URLField(verbose_name='Facebook Page', max_length=100, blank=True, null=True)
     email = models.EmailField(verbose_name='Email', max_length=50, blank=True, null=True)
     contact_number = PhoneNumberField(verbose_name='Contact Number', blank=True)
+    image_file = models.ImageField(verbose_name='Image File', upload_to=image_path)
 
     class Meta:
         ordering = ['name']
@@ -82,6 +86,12 @@ class Series(models.Model):
     
     def __str__(self):
         return f"{self.name}"
+    
+    def getLabel(self):
+        label = f"{self.name}"
+        if self.congregation:
+            label = f"{self.name} ({self.congregation.name})"
+        return label
 
 @receiver(models.signals.post_delete, sender=Sermon)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
@@ -109,6 +119,36 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         return False
     
     new_file = instance.audio_file
+    if not old_file == new_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)
+
+@receiver(models.signals.post_delete, sender=Congregation)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding `MediaFile` object is deleted.
+    """
+    if instance.image_file:
+        if os.path.isfile(instance.image_file.path):
+            os.remove(instance.image_file.path)
+
+@receiver(models.signals.pre_save, sender=Congregation)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `MediaFile` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Congregation.objects.get(pk=instance.pk).image_file
+    except Congregation.DoesNotExist:
+        return False
+    
+    new_file = instance.image_file
     if not old_file == new_file:
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
