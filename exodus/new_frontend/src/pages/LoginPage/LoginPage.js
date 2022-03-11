@@ -12,8 +12,8 @@ import {
     Snackbar,
     AlertTitle,
 } from "@mui/material";
-import Logo from "../../images/KerkLogo.svg";
-import Logo01 from "../../images/Logo_Dark.svg";
+import KerkLogo from "../../images/KerkLogo.svg";
+import LogoDark from "../../images/Logo_Dark.svg";
 import Copyright from "./Copyright";
 import AuthContext from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -103,12 +103,12 @@ const LoginPage = () => {
                 >
                     <img
                         className="mx-auto h-40 w-auto"
-                        src={Logo}
+                        src={KerkLogo}
                         alt="Logo"
                     />
                     <img
                         className="mx-auto h-14 w-auto"
-                        src={Logo01}
+                        src={LogoDark}
                         alt="Logo"
                     />
                     <Typography component="h1" variant="h5">

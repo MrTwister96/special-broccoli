@@ -1,19 +1,19 @@
 {
     "short_name": "EG Klank",
-    "name": "EG Klank Web Application",
+    "name": "",
     "icons": [
         {
-            "src": "logo.svg",
+            "src": "KerkLogo_Dark.svg",
             "sizes": "64x64 32x32 24x24 16x16",
             "type": "image/svg+xml"
         },
         {
-            "src": "logo.svg",
+            "src": "KerkLogo_Dark.svg",
             "type": "image/svg+xml",
             "sizes": "192x192"
         },
         {
-            "src": "logo.svg",
+            "src": "KerkLogo_Dark.svg",
             "type": "image/svg+xml",
             "sizes": "512x512"
         }

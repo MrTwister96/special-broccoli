@@ -1,23 +1,18 @@
-import { CssBaseline, Box, Typography, Container } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import { CssBaseline, Container, Grid } from "@mui/material";
+import React, { useContext, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import NavigationContext from "../../context/NavigationContext";
-import axios from "axios";
+import Banner from "./Banner";
+import CardLink from "./CardLink";
+import congregation_image from "../../images/congregation_image.jpg";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+    const navigate = useNavigate();
     const { setLinkActive } = useContext(NavigationContext);
-    const [votd, setVotd] = useState(null);
 
     useEffect(() => {
         setLinkActive("Home");
-        const getVotd = async () => {
-            let response = await axios.get(
-                "https://labs.bible.org/api/?passage=votd&type=json"
-            );
-
-            setVotd(response.data);
-        };
-        getVotd();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -25,50 +20,21 @@ const HomePage = () => {
         <div>
             <NavBar />
             <CssBaseline />
-            <main>
-                <Box
-                    sx={{
-                        bgcolor: "background.paper",
-                        pt: 8,
-                    }}
-                >
-                    <Container maxWidth="sm">
-                        <Typography
-                            component="h1"
-                            variant="h2"
-                            align="center"
-                            color="text.primary"
-                            gutterBottom
-                            mb={5}
-                        >
-                            Tuis
-                        </Typography>
-                        {votd && (
-                            <Typography
-                                variant="h4"
-                                align="center"
-                                color="text.secondary"
-                                paragraph
-                            >
-                                {votd[0].bookname} {votd[0].chapter}:{" "}
-                                {votd[0].verse} - {votd[votd.length - 1].verse}
-                            </Typography>
-                        )}
-                        {votd &&
-                            votd.map((verse) => (
-                                <Typography
-                                    variant="h5"
-                                    align="center"
-                                    color="text.secondary"
-                                    paragraph
-                                    key={verse.verse}
-                                >
-                                    "{verse.verse}" {verse.text}
-                                </Typography>
-                            ))}
-                    </Container>
-                </Box>
-            </main>
+            <Container maxWidth="lg" className="mt-5 mb-5 z-0">
+                <main>
+                    <Banner />
+                    <Grid container spacing={4}>
+                        <CardLink
+                            image={congregation_image}
+                            title="Gemeentes"
+                            description="Sien en deursoek die preke van elke EG Kerk Gemeente"
+                            onClick={() => {
+                                navigate(`/gemeentes`);
+                            }}
+                        />
+                    </Grid>
+                </main>
+            </Container>
         </div>
     );
 };

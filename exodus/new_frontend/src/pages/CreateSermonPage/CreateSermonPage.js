@@ -1,8 +1,9 @@
 // Functionality
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAxios from "../../hooks/useAxios";
+import NavigationContext from "../../context/NavigationContext";
 
 // UI
 import {
@@ -22,7 +23,209 @@ import { baseURL } from "../../hooks/useAxios";
 import FileDisplay from "./FileDisplay";
 import Dropzone from "./Dropzone";
 
+const bibleBooks = [
+    {
+        label: "Genesis",
+    },
+    {
+        label: "Exodus",
+    },
+    {
+        label: "Levitikus",
+    },
+    {
+        label: "Numeri",
+    },
+    {
+        label: "Deuteronomium",
+    },
+    {
+        label: "Josua",
+    },
+    {
+        label: "Rigters",
+    },
+    {
+        label: "Rut",
+    },
+    {
+        label: "1 Samuel",
+    },
+    {
+        label: "2 Samuel",
+    },
+    {
+        label: "1 Konings",
+    },
+    {
+        label: "2 Konings",
+    },
+    {
+        label: "1 Kronieke",
+    },
+    {
+        label: "2 Kronieke",
+    },
+    {
+        label: "Esra",
+    },
+    {
+        label: "Nehemia",
+    },
+    {
+        label: "Ester",
+    },
+    {
+        label: "Job",
+    },
+    {
+        label: "Psalms",
+    },
+    {
+        label: "Spreuke",
+    },
+    {
+        label: "Prediker",
+    },
+    {
+        label: "Hooglied",
+    },
+    {
+        label: "Jesaja",
+    },
+    {
+        label: "Jeremia",
+    },
+    {
+        label: "Klaagliedere",
+    },
+    {
+        label: "Esegiel",
+    },
+    {
+        label: "Daniel",
+    },
+    {
+        label: "Hosea",
+    },
+    {
+        label: "Joel",
+    },
+    {
+        label: "Amos",
+    },
+    {
+        label: "Obadja",
+    },
+    {
+        label: "Jona",
+    },
+    {
+        label: "Miga",
+    },
+    {
+        label: "Nahum",
+    },
+    {
+        label: "Habakuk",
+    },
+    {
+        label: "Sefanja",
+    },
+    {
+        label: "Haggai",
+    },
+    {
+        label: "Sagaria",
+    },
+    {
+        label: "Maleagi",
+    },
+    {
+        label: "Mattheus",
+    },
+    {
+        label: "Markus",
+    },
+    {
+        label: "Lukas",
+    },
+    {
+        label: "Johannes",
+    },
+    {
+        label: "Handelinge",
+    },
+    {
+        label: "Romeine",
+    },
+    {
+        label: "1 Korinthiers",
+    },
+    {
+        label: "2 Korinthiers",
+    },
+    {
+        label: "Galasiers",
+    },
+    {
+        label: "Efesiers",
+    },
+    {
+        label: "Filippense",
+    },
+    {
+        label: "Kolossense",
+    },
+    {
+        label: "1 Thessalonicense",
+    },
+    {
+        label: "2 Thessalonicense",
+    },
+    {
+        label: "1 Timotheus",
+    },
+    {
+        label: "2 Timotheus",
+    },
+    {
+        label: "Titus",
+    },
+    {
+        label: "Filemon",
+    },
+    {
+        label: "Hebreers",
+    },
+    {
+        label: "Jakobus",
+    },
+    {
+        label: "1 Petrus",
+    },
+    {
+        label: "2 Petrus",
+    },
+    {
+        label: "1 Johannes",
+    },
+    {
+        label: "2 Johannes",
+    },
+    {
+        label: "3 Johannes",
+    },
+    {
+        label: "Judas",
+    },
+    {
+        label: "Openbaring",
+    },
+];
+
 const CreateSermonPage = () => {
+    const { setAllLinksInactive } = useContext(NavigationContext);
     const navigate = useNavigate();
     const api = useAxios();
 
@@ -33,26 +236,47 @@ const CreateSermonPage = () => {
     // Form Fields
     const [date, setDate] = useState(null);
     const [theme, setTheme] = useState("");
+    const [book, setBook] = useState(null);
     const [scripture, setScripture] = useState("");
     const [congregation, setCongregation] = useState(null);
     const [preacher, setPreacher] = useState(null);
     const [audio_file, setAudioFile] = useState(null);
     const [serie, setSerie] = useState(null);
 
+    // Form Controls
+    const [themeError, setThemeError] = useState(false);
+    const [themeErrorMessage, setThemeErrorMessage] = useState("");
+    const [scriptureError, setScriptureError] = useState(false);
+    const [scriptureErrorMessage, setScriptureErrorMessage] = useState("");
+
     // Form Field Validation
     useEffect(() => {
         if (
-            date == null ||
-            theme == "" ||
-            scripture == "" ||
-            preacher == null ||
-            audio_file == null
+            date === null ||
+            theme === "" ||
+            book === null ||
+            scripture === "" ||
+            preacher === null ||
+            audio_file === null
         ) {
+            setSubmitDisabled(true);
+        } else if (themeError === true) {
+            setSubmitDisabled(true);
+        } else if (scriptureError === true) {
             setSubmitDisabled(true);
         } else {
             setSubmitDisabled(false);
         }
-    }, [date, theme, scripture, preacher, audio_file]);
+    }, [
+        date,
+        theme,
+        book,
+        scripture,
+        preacher,
+        audio_file,
+        themeError,
+        scriptureError,
+    ]);
 
     // Server Side Info
     const [congregations, setCongregations] = useState(null);
@@ -61,6 +285,7 @@ const CreateSermonPage = () => {
 
     // Initial Loading
     useEffect(() => {
+        setAllLinksInactive();
         const getCongregations = async () => {
             let response = await axios.get(`${baseURL}/api/congregations`);
 
@@ -99,6 +324,7 @@ const CreateSermonPage = () => {
         };
 
         initializePage();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const createSermon = async (event) => {
@@ -108,7 +334,7 @@ const CreateSermonPage = () => {
         let form_data = new FormData();
         form_data.append("date", date.toISOString());
         form_data.append("theme", theme);
-        form_data.append("scripture", scripture);
+        form_data.append("scripture", `${book} ${scripture}`);
         form_data.append("preacher", preacher.id);
         if (congregation !== null) {
             form_data.append("congregation", congregation.id);
@@ -124,14 +350,14 @@ const CreateSermonPage = () => {
             },
         });
 
-        if (response.status == 201) {
+        if (response.status === 201) {
             let notify = await swal({
                 title: "Preek Geskep!",
                 text: `Tema: ${response.data.theme}`,
                 icon: "success",
             });
 
-            if (notify == true) {
+            if (notify === true) {
                 navigate("/");
             }
         }
@@ -154,6 +380,40 @@ const CreateSermonPage = () => {
                     setSeries(null);
                 }
             }
+        }
+    };
+
+    const handleBibleBookSelect = (event, newValue) => {
+        if (newValue === null) {
+            setBook(null);
+        } else {
+            setBook(newValue.label);
+        }
+    };
+
+    const handleThemeChange = (event) => {
+        let value = event.target.value;
+        setTheme(value);
+
+        if (/^([a-zA-Z0-9\s_-]+)$/.test(value)) {
+            setThemeError(false);
+            setThemeErrorMessage("");
+        } else {
+            setThemeError(true);
+            setThemeErrorMessage("Toegelate karakters: A-Z, a-z, 0-9, -, _");
+        }
+    };
+
+    const handleScriptureChange = (event) => {
+        let value = event.target.value;
+        setScripture(value);
+
+        if (/^([0-9\s,&:-]+)$/.test(value)) {
+            setScriptureError(false);
+            setScriptureErrorMessage("");
+        } else {
+            setScriptureError(true);
+            setScriptureErrorMessage("Toegelate karakters: 0-9, :, -, &, ','");
         }
     };
 
@@ -216,25 +476,45 @@ const CreateSermonPage = () => {
                                                 <TextField
                                                     label="Tema"
                                                     className="w-full"
+                                                    error={themeError}
+                                                    helperText={
+                                                        themeErrorMessage
+                                                    }
                                                     value={theme}
-                                                    onChange={(event) => {
-                                                        setTheme(
-                                                            event.target.value
-                                                        );
-                                                    }}
+                                                    onChange={handleThemeChange}
+                                                />
+
+                                                {/* Book Field */}
+                                                <Autocomplete
+                                                    disablePortal
+                                                    options={bibleBooks}
+                                                    onChange={
+                                                        handleBibleBookSelect
+                                                    }
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Boek"
+                                                            className="w-full"
+                                                        />
+                                                    )}
                                                 />
 
                                                 {/* Scripture Field */}
-                                                <TextField
-                                                    label="Skriflesing"
-                                                    className="w-full"
-                                                    value={scripture}
-                                                    onChange={(event) => {
-                                                        setScripture(
-                                                            event.target.value
-                                                        );
-                                                    }}
-                                                />
+                                                {book && (
+                                                    <TextField
+                                                        label="Hoofstuk & Verse"
+                                                        className="w-full"
+                                                        error={scriptureError}
+                                                        helperText={
+                                                            scriptureErrorMessage
+                                                        }
+                                                        value={scripture}
+                                                        onChange={
+                                                            handleScriptureChange
+                                                        }
+                                                    />
+                                                )}
 
                                                 {/* Congregation Field */}
                                                 {congregations && (

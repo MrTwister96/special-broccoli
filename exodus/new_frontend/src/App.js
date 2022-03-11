@@ -14,6 +14,23 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 const theme = createTheme();
 
+theme.typography.h3 = {
+    fontSize: "1.6rem",
+    "@media (min-width:600px)": {
+        fontSize: "2rem",
+    },
+    [theme.breakpoints.up("md")]: {
+        fontSize: "3rem",
+    },
+};
+
+theme.typography.h5 = {
+    fontSize: "0.9rem",
+    [theme.breakpoints.up("sm")]: {
+        fontSize: "1.5rem",
+    },
+};
+
 const App = () => {
     const { user } = useContext(AuthContext);
 

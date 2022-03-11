@@ -95,7 +95,7 @@ const SermonsSection = ({ sermons, search }) => {
                                 variant="overline"
                                 className="break-all"
                             >
-                                {dayjs(item.date).format("DD MMM YYYY HH:mm A")}
+                                {item.theme}
                             </Typography>
                             <Divider />
                             <Typography
@@ -106,7 +106,7 @@ const SermonsSection = ({ sermons, search }) => {
                                 variant="overline"
                                 className="break-all"
                             >
-                                {item.theme}
+                                {dayjs(item.date).format("DD MMM YYYY HH:mm A")}
                             </Typography>
                         </div>
                     </AccordionSummary>

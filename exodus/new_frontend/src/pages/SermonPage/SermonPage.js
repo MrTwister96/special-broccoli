@@ -60,7 +60,7 @@ const SermonPage = () => {
                                     src={`${baseURL}/api/sermons/${sermon.id}/get_audio/`}
                                     onPlay={(e) => console.log("onPlay")}
                                     progressJumpStep={30000}
-                                    volume={0.2}
+                                    volume={0.8}
                                     autoPlay
                                     // other props here
                                 />
