@@ -82,11 +82,6 @@ const CongregationPage = () => {
 
                     <Container sx={{ py: 5 }} maxWidth="lg">
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={12} md={4}>
-                                <InformationSection
-                                    congregation={congregation}
-                                />
-                            </Grid>
                             <Grid item xs={12} sm={12} md={8}>
                                 {sermons && (
                                     <SermonsSection
@@ -94,6 +89,11 @@ const CongregationPage = () => {
                                         search={search}
                                     />
                                 )}
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={4}>
+                                <InformationSection
+                                    congregation={congregation}
+                                />
                             </Grid>
                         </Grid>
                     </Container>
