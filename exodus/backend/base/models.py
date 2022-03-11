@@ -39,7 +39,7 @@ class Sermon(models.Model):
     preacher = models.ForeignKey("Preacher", on_delete=models.DO_NOTHING, related_name="sermons")
     series = models.ForeignKey("Series", on_delete=models.DO_NOTHING, blank=True, null=True, related_name="sermons")
     series_index = models.IntegerField(verbose_name="Series Index", blank=True, null=True)
-    audio_file = models.FileField(verbose_name="Audio File" ,upload_to=audio_path)
+    audio_file = models.FileField(verbose_name="Audio File" ,upload_to=audio_path, max_length=500)
     
 
     class Meta:
