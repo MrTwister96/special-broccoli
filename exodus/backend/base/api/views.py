@@ -34,9 +34,13 @@ def getCongregations(request):
     return Response(serializer.data)
 
 
-class CongregationViewSet(viewsets.ModelViewSet):
+class CongregationViewSet(FiltersMixin, viewsets.ModelViewSet):
     serializer_class = serializers.CongregationSerializer
     queryset = models.Congregation.objects.all()
+
+    filter_mappings = {
+        "slug": "slug"
+    }
 
     def get_permissions(self):
         edit_actions = ["create", "update", "partial_update", "destroy"]

@@ -12,38 +12,41 @@ import axios from "axios";
 const CongregationPage = () => {
     let { slug } = useParams();
     const navigate = useNavigate();
-
-    const { congregations, raiseError } = useContext(StoreContext);
+    const { raiseError } = useContext(StoreContext);
     const [congregation, setCongregation] = useState(null);
     const [sermons, setSermons] = useState(null);
     const [globalSermons, setGlobalSermons] = useState(null);
 
-    useEffect(() => {
-        if (congregations.length !== 0) {
-            const found = congregations.find((item) => item.slug === slug);
-            if (!found) {
-                raiseError(
-                    `"${slug}" is nie n bestaande gemeente nie. Kies n bestaande gemeente`
-                );
-                navigate("/gemeentes");
-            }
-            setCongregation(found);
+    const initialize = async () => {
+        let congregationResponse = await axios.get(
+            `${baseURL}/api/congregations/?slug=${slug}`
+        );
 
-            const getSermons = async () => {
-                let response = await axios.get(
-                    `${baseURL}/api/sermons/?congregation=${found.id}`
-                );
+        if (congregationResponse.data.length !== 0) {
+            congregationResponse.data.forEach(async (item) => {
+                if (item.slug === slug) {
+                    setCongregation(item);
 
-                if (response.status === 200) {
-                    setSermons(response.data);
-                    setGlobalSermons(response.data);
+                    let sermonsResponse = await axios.get(
+                        `${baseURL}/api/sermons/?congregation=${item.id}`
+                    );
+
+                    setSermons(sermonsResponse.data);
+                    setGlobalSermons(sermonsResponse.data);
                 }
-            };
-
-            getSermons();
+            });
+        } else {
+            raiseError(
+                `"${slug}" is nie n bestaande gemeente nie. Kies n bestaande gemeente`
+            );
+            navigate("/gemeentes");
         }
+    };
+
+    useEffect(() => {
+        initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [congregations]);
+    }, []);
 
     const [searchParam] = useState([
         "theme",

@@ -23,30 +23,36 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import notFound from "./notFound.svg";
 
+import { baseURL } from "../../hooks/useAxios";
+import axios from "axios";
+
 const CongregationsPage = () => {
     const { setLinkActive } = useContext(NavigationContext);
-    const { congregations, error, clearError } = useContext(StoreContext);
-
-    const [localCongregations, setLocalCongregations] = useState(null);
+    const { error, clearError } = useContext(StoreContext);
+    const [congregations, setCongregations] = useState(null);
+    const [globalCongregations, setGlobalCongregations] = useState(null);
     const [searchParam] = useState(["name"]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        setLinkActive("Congregations");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const initialize = async () => {
+        let response = await axios.get(`${baseURL}/api/congregations/`);
+
+        setCongregations(response.data);
+        setGlobalCongregations(response.data);
+
+        setLoading(false);
+    };
 
     useEffect(() => {
-        if (congregations.length !== 0) {
-            setLocalCongregations(congregations);
-            setLoading(false);
-        }
-    }, [congregations]);
+        setLinkActive("Congregations");
+        initialize();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const search = (e) => {
         let searchValue = e.target.value;
 
-        let searchedItems = congregations.filter((item) => {
+        let searchedItems = globalCongregations.filter((item) => {
             return searchParam.some((newItem) => {
                 return (
                     item[newItem]
@@ -57,7 +63,7 @@ const CongregationsPage = () => {
             });
         });
 
-        setLocalCongregations(searchedItems);
+        setCongregations(searchedItems);
     };
 
     return (
@@ -158,10 +164,10 @@ const CongregationsPage = () => {
                             </Stack>
                         </Container>
                     </Box>
-                    {localCongregations && (
+                    {congregations && (
                         <Container sx={{ py: 5 }} maxWidth="lg">
                             {/* End hero unit */}
-                            {localCongregations.length === 0 ? (
+                            {congregations.length === 0 ? (
                                 <div className="justify-center flex flex-col">
                                     <Typography
                                         component="h1"
@@ -178,7 +184,7 @@ const CongregationsPage = () => {
                                 </div>
                             ) : (
                                 <Grid container spacing={4}>
-                                    {localCongregations.map((item) => (
+                                    {congregations.map((item) => (
                                         <Grid
                                             item
                                             key={item.id}
