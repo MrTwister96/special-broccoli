@@ -1,26 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
-import NavBar from "../../components/NavBar";
-import NavigationContext from "../../context/NavigationContext";
-import StoreContext from "../../context/StoreContext";
-
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-
-import CongregationCard from "../../components/CongregationCard";
 import {
     TextField,
     CircularProgress,
     Backdrop,
-    Snackbar,
-    Alert,
-    AlertTitle,
+    CssBaseline,
+    Grid,
+    Stack,
+    Box,
+    Typography,
+    Container,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 
+import NavBar from "../../components/NavBar";
+import ErrorNotification from "../../components/ErrorNotification";
+import CongregationCard from "../../components/CongregationCard";
+
+import NavigationContext from "../../context/NavigationContext";
+
+import SearchIcon from "@mui/icons-material/Search";
 import notFound from "./notFound.svg";
 
 import { baseURL } from "../../hooks/useAxios";
@@ -28,7 +25,6 @@ import axios from "axios";
 
 const CongregationsPage = () => {
     const { setLinkActive } = useContext(NavigationContext);
-    const { error, clearError } = useContext(StoreContext);
     const [congregations, setCongregations] = useState(null);
     const [globalCongregations, setGlobalCongregations] = useState(null);
     const [searchParam] = useState(["name"]);
@@ -69,22 +65,7 @@ const CongregationsPage = () => {
     return (
         <>
             {/* Error Messages */}
-            <Snackbar
-                open={error.status}
-                autoHideDuration={6000}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                onClose={clearError}
-            >
-                <Alert
-                    onClose={clearError}
-                    severity="error"
-                    sx={{ width: "100%" }}
-                    variant="filled"
-                >
-                    <AlertTitle>Foutboodskap</AlertTitle>
-                    {error.message}
-                </Alert>
-            </Snackbar>
+            <ErrorNotification />
             {/* Loading Backdrop */}
             <Backdrop
                 sx={{

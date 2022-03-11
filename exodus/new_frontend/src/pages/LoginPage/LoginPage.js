@@ -6,11 +6,8 @@ import {
     TextField,
     Box,
     Container,
-    Alert,
     Backdrop,
     CircularProgress,
-    Snackbar,
-    AlertTitle,
 } from "@mui/material";
 import KerkLogo from "../../images/KerkLogo.svg";
 import LogoDark from "../../images/Logo_Dark.svg";
@@ -18,10 +15,11 @@ import Copyright from "./Copyright";
 import AuthContext from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import StoreContext from "../../context/StoreContext";
+import ErrorNotification from "../../components/ErrorNotification";
 
 const LoginPage = () => {
     const { user, loginUser } = useContext(AuthContext);
-    const { error, raiseError, clearError } = useContext(StoreContext);
+    const { raiseError } = useContext(StoreContext);
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -51,22 +49,7 @@ const LoginPage = () => {
     return (
         <>
             {/* Error Messages */}
-            <Snackbar
-                open={error.status}
-                autoHideDuration={6000}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                onClose={clearError}
-            >
-                <Alert
-                    onClose={clearError}
-                    severity="error"
-                    sx={{ width: "100%" }}
-                    variant="filled"
-                >
-                    <AlertTitle>Foutboodskap</AlertTitle>
-                    {error.message}
-                </Alert>
-            </Snackbar>
+            <ErrorNotification />
             {/* Loading Backdrop */}
             <Backdrop
                 sx={{
