@@ -100,7 +100,7 @@ const SermonPage = () => {
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary="Prediker"
-                                                secondary={`${sermon.preacher_title} ${sermon.preacher_name} ${sermon.preacher_surname}`}
+                                                secondary={`${sermon.preacher_label}`}
                                             />
                                         </div>
                                     </ListItem>

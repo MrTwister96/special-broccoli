@@ -148,8 +148,7 @@ const SermonsSection = ({
                                     variant="overline"
                                     className="break-all"
                                 >
-                                    {item.preacher_title} {item.preacher_name}{" "}
-                                    {item.preacher_surname}
+                                    {item.preacher_label}
                                 </Typography>
                             </Typography> */}
                             <Divider />
@@ -178,8 +177,7 @@ const SermonsSection = ({
                                     Prediker:
                                 </Typography>
                                 <Typography variant="overline">
-                                    {item.preacher_title} {item.preacher_name}{" "}
-                                    {item.preacher_surname}
+                                    {item.preacher_label}
                                 </Typography>
                             </div>
                             <div className="flex flex-row">

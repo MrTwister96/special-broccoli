@@ -13,14 +13,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class SermonSerializer(ModelSerializer):
-    preacher_title = CharField(source="preacher.title", required=False)
-    preacher_name = CharField(source="preacher.name", required=False)
-    preacher_surname = CharField(source="preacher.surname", required=False)
+    preacher_label = CharField(source="preacher.label", required=False)
     audio_file_size = IntegerField(source="audio_file.size", required=False)
 
     class Meta:
         model = models.Sermon
-        fields = "__all__"
+        fields = ["id", "preacher_label", "audio_file_size", "date", "theme", "scripture", "download_count", "congregation", "preacher", "series"]
 
 class PreacherSerializer(ModelSerializer):
     label = CharField(source="__str__")

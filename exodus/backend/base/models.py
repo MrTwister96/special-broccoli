@@ -74,6 +74,9 @@ class Preacher(models.Model):
     def __str__(self):
         return f"{self.surname}, {self.name} ({self.title})"
 
+    def label(self):
+        return f"{self.title} {self.name} {self.surname}"
+
 class Series(models.Model):
     name = models.CharField(verbose_name="Series Name", max_length=50)
     description = models.TextField(verbose_name="Series Description", max_length=1000)
