@@ -12,6 +12,7 @@ import {
     Stack,
     Box,
     TextField,
+    Pagination,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -26,7 +27,13 @@ import filesize from "filesize";
 import { useNavigate } from "react-router-dom";
 import { WhatsappShareButton, WhatsappIcon } from "react-share";
 
-const SermonsSection = ({ sermons, search }) => {
+const SermonsSection = ({
+    sermons,
+    search,
+    handlePaginate,
+    pages,
+    sermonCount,
+}) => {
     const navigate = useNavigate();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -41,10 +48,10 @@ const SermonsSection = ({ sermons, search }) => {
                 component="h1"
                 variant="h5"
             >
-                Preke
+                Preke ({sermonCount})
             </Typography>
             <Stack
-                sx={{ mt: 1, mb: 3 }}
+                sx={{ mt: 1, mb: 2 }}
                 direction="row"
                 spacing={2}
                 justifyContent="center"
@@ -72,6 +79,29 @@ const SermonsSection = ({ sermons, search }) => {
                     />
                 </Box>
             </Stack>
+            {pages > 1 && (
+                <Stack
+                    sx={{ mt: 1, mb: 2 }}
+                    direction="row"
+                    spacing={2}
+                    justifyContent="center"
+                >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            minWidth: "80%",
+                        }}
+                        className="justify-center"
+                    >
+                        <Pagination
+                            count={pages}
+                            color="primary"
+                            onChange={handlePaginate}
+                        />
+                    </Box>
+                </Stack>
+            )}
+
             {sermons.map((item) => (
                 <Accordion
                     key={item.id}
@@ -97,6 +127,31 @@ const SermonsSection = ({ sermons, search }) => {
                             >
                                 {item.theme}
                             </Typography>
+                            {/* <Divider />
+                            <Typography
+                                sx={{
+                                    fontWeight: "bold",
+                                    color: "text.secondary",
+                                    fontSize: "subtitle2.fontSize",
+                                }}
+                                variant="overline"
+                                className="break-all"
+                            >
+                                {item.scripture}
+                                <Divider />
+                                <Typography
+                                    sx={{
+                                        fontWeight: "bold",
+                                        color: "text.secondary",
+                                        fontSize: "subtitle2.fontSize",
+                                    }}
+                                    variant="overline"
+                                    className="break-all"
+                                >
+                                    {item.preacher_title} {item.preacher_name}{" "}
+                                    {item.preacher_surname}
+                                </Typography>
+                            </Typography> */}
                             <Divider />
                             <Typography
                                 sx={{

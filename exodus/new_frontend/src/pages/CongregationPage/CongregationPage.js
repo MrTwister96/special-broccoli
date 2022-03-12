@@ -17,6 +17,23 @@ const CongregationPage = () => {
     const [sermons, setSermons] = useState(null);
     const [globalSermons, setGlobalSermons] = useState(null);
 
+    const [pages, setPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [sermonsPerPage, setSermonsPerPage] = useState(10);
+
+    // const [sermons, setSermons] = useState(null);
+
+    const indexOfLastSermon = currentPage * sermonsPerPage;
+    const indexOfFirstSermon = indexOfLastSermon - sermonsPerPage;
+    const currentSermons = sermons?.slice(
+        indexOfFirstSermon,
+        indexOfLastSermon
+    );
+
+    const handlePaginate = (event, page) => {
+        setCurrentPage(page);
+    };
+
     const initialize = async () => {
         let congregationResponse = await axios.get(
             `${baseURL}/api/congregations/?slug=${slug}`
@@ -33,6 +50,9 @@ const CongregationPage = () => {
 
                     setSermons(sermonsResponse.data);
                     setGlobalSermons(sermonsResponse.data);
+                    setPages(
+                        Math.ceil(sermonsResponse.data.length / sermonsPerPage)
+                    );
                 }
             });
         } else {
@@ -70,6 +90,8 @@ const CongregationPage = () => {
         });
 
         setSermons(searchedItems);
+        setPages(Math.ceil(searchedItems.length / sermonsPerPage));
+        setCurrentPage(1);
     };
 
     return (
@@ -85,8 +107,11 @@ const CongregationPage = () => {
                             <Grid item xs={12} sm={12} md={8}>
                                 {sermons && (
                                     <SermonsSection
-                                        sermons={sermons}
+                                        sermons={currentSermons}
+                                        sermonCount={globalSermons?.length}
                                         search={search}
+                                        handlePaginate={handlePaginate}
+                                        pages={pages}
                                     />
                                 )}
                             </Grid>
