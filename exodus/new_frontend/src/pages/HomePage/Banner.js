@@ -7,9 +7,9 @@ import HomePageBanner from "../../images/HomePageBanner.jpg";
 
 const pageInfo = {
     title: "Evangelies Gereformeerde Kerk van Suid-Afrika: Klank Bediening",
-    verseHeader: "Handelinge 1:8",
+    verseHeader: "Romeine 1:16",
     verseBody:
-        '"maar julle sal krag ontvang wanneer die Heilige Gees oor julle kom, en julle sal my getuies wees in Jerusalem sowel as in die hele Judéa en Samaría en tot aan die uiterste van die aarde."',
+        '"WANT ek skaam my nie oor die evangelie van Christus nie, want dit is \'n krag van God tot redding vir elkeen wat glo, eerste vir die Jood en ook vir die Griek."',
     linkText: "Continue reading…",
 };
 
