@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
-import { CssBaseline, Container, Grid } from "@mui/material";
+import { CssBaseline, Container, Grid, CircularProgress } from "@mui/material";
 import StoreContext from "../../context/StoreContext";
 import { useNavigate, useParams } from "react-router-dom";
 import PageHeading from "./PageHeading";
@@ -16,12 +16,12 @@ const CongregationPage = () => {
     const [congregation, setCongregation] = useState(null);
     const [sermons, setSermons] = useState(null);
     const [globalSermons, setGlobalSermons] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [pages, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    // eslint-disable-next-line
     const [sermonsPerPage, setSermonsPerPage] = useState(10);
-
-    // const [sermons, setSermons] = useState(null);
 
     const indexOfLastSermon = currentPage * sermonsPerPage;
     const indexOfFirstSermon = indexOfLastSermon - sermonsPerPage;
@@ -53,6 +53,8 @@ const CongregationPage = () => {
                     setPages(
                         Math.ceil(sermonsResponse.data.length / sermonsPerPage)
                     );
+
+                    setLoading(false);
                 }
             });
         } else {
@@ -100,28 +102,38 @@ const CongregationPage = () => {
             <CssBaseline />
             {congregation && (
                 <main>
-                    <PageHeading congregation={congregation} />
+                    {loading ? (
+                        <div className="min-h-screen justify-center items-center flex bg-gray-100 rounded-xl">
+                            <CircularProgress />
+                        </div>
+                    ) : (
+                        <>
+                            <PageHeading congregation={congregation} />
 
-                    <Container sx={{ py: 5 }} maxWidth="lg">
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={12} md={8}>
-                                {sermons && (
-                                    <SermonsSection
-                                        sermons={currentSermons}
-                                        sermonCount={globalSermons?.length}
-                                        search={search}
-                                        handlePaginate={handlePaginate}
-                                        pages={pages}
-                                    />
-                                )}
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={4}>
-                                <InformationSection
-                                    congregation={congregation}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Container>
+                            <Container sx={{ py: 5 }} maxWidth="lg">
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={12} md={8}>
+                                        {sermons && (
+                                            <SermonsSection
+                                                sermons={currentSermons}
+                                                sermonCount={
+                                                    globalSermons?.length
+                                                }
+                                                search={search}
+                                                handlePaginate={handlePaginate}
+                                                pages={pages}
+                                            />
+                                        )}
+                                    </Grid>
+                                    <Grid item xs={12} sm={12} md={4}>
+                                        <InformationSection
+                                            congregation={congregation}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Container>
+                        </>
+                    )}
                 </main>
             )}
         </>
