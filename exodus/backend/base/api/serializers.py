@@ -18,7 +18,7 @@ class SermonSerializer(ModelSerializer):
 
     class Meta:
         model = models.Sermon
-        fields = ["id", "preacher_label", "audio_file_size", "date", "theme", "scripture", "download_count", "congregation", "preacher", "series"]
+        fields = ["id", "preacher_label", "audio_file_size", "date", "theme", "scripture", "download_count", "congregation", "preacher", "series", "category"]
 
 class PreacherSerializer(ModelSerializer):
     label = CharField(source="__str__")
@@ -29,6 +29,7 @@ class PreacherSerializer(ModelSerializer):
 
 class SeriesSerializer(ModelSerializer):
     label = CharField(source="getLabel")
+    category_name = CharField(source="category")
     # sermons = SermonSerializer(many=True, read_only=True)
     class Meta:
         model = models.Series

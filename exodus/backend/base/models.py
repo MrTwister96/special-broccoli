@@ -1,4 +1,5 @@
 from email.mime import image
+from unicodedata import category
 from django.db import models
 from uuid import uuid4
 from phonenumber_field.modelfields import PhoneNumberField
@@ -37,6 +38,7 @@ class Sermon(models.Model):
     download_count = models.IntegerField(verbose_name="Download Count", default=0)
     congregation = models.ForeignKey("Congregation", on_delete=models.SET_NULL, blank=True, null=True, related_name="sermons")
     preacher = models.ForeignKey("Preacher", on_delete=models.DO_NOTHING, related_name="sermons")
+    category = models.ForeignKey("Category", on_delete=models.SET_NULL, blank=True, null=True, related_name="sermons")
     series = models.ForeignKey("Series", on_delete=models.DO_NOTHING, blank=True, null=True, related_name="sermons")
     series_index = models.IntegerField(verbose_name="Series Index", blank=True, null=True)
     audio_file = models.FileField(verbose_name="Audio File" ,upload_to=audio_path, max_length=500)
@@ -81,6 +83,8 @@ class Series(models.Model):
     name = models.CharField(verbose_name="Series Name", max_length=50)
     description = models.TextField(verbose_name="Series Description", max_length=1000)
     congregation = models.ForeignKey("Congregation", on_delete=models.SET_NULL, blank=True, null=True, related_name="series")
+    preacher = models.ForeignKey("Preacher", on_delete=models.SET_NULL, blank=True, null=True, related_name="series")
+    category = models.ForeignKey("Category", on_delete=models.SET_NULL, blank=True, null=True, related_name="series")
 
     class Meta:
         ordering = ['name']
@@ -94,7 +98,21 @@ class Series(models.Model):
         label = f"{self.name}"
         if self.congregation:
             label = f"{self.name} ({self.congregation.name})"
+        elif self.preacher:
+            label = f"{self.name} ({self.preacher.label})"
         return label
+
+class Category(models.Model):
+    name = models.CharField(verbose_name="Category Name", max_length=50)
+    description = models.TextField(verbose_name="Category Description", max_length=1000)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+    
+    def __str__(self):
+        return f"{self.name}"
 
 @receiver(models.signals.post_delete, sender=Sermon)
 def auto_delete_file_on_delete(sender, instance, **kwargs):

@@ -8,6 +8,7 @@ import InformationSection from "./InformationSection";
 import SermonsSection from "./SermonsSection";
 import { baseURL } from "../../hooks/useAxios";
 import axios from "axios";
+import SeriesSection from "./SeriesSection";
 
 const CongregationPage = () => {
     let { slug } = useParams();
@@ -70,12 +71,7 @@ const CongregationPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const [searchParam] = useState([
-        "theme",
-        "scripture",
-        "preacher_name",
-        "preacher_surname",
-    ]);
+    const [searchParam] = useState(["theme", "scripture", "preacher_label"]);
 
     const search = (e) => {
         let searchValue = e.target.value;
@@ -126,6 +122,9 @@ const CongregationPage = () => {
                                         )}
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={4}>
+                                        <SeriesSection
+                                            congregationId={congregation.id}
+                                        />
                                         <InformationSection
                                             congregation={congregation}
                                         />

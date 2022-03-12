@@ -72,7 +72,7 @@ const SermonsSection = ({
                     />
                     <TextField
                         fullWidth
-                        label="Soek"
+                        label="Soek Preek"
                         name="Soek"
                         variant="standard"
                         onChange={search}
