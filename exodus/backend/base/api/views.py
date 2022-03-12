@@ -13,6 +13,7 @@ from .validations import sermons_query_schema, series_query_schema
 from filters.mixins import (
     FiltersMixin,
 )
+from .serializers import SermonSerializer
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -124,3 +125,10 @@ class SeriesViewSet(FiltersMixin, viewsets.ModelViewSet):
         else:
             permission_classes = [IsAuthenticatedOrReadOnly]
         return [permission() for permission in permission_classes]
+    
+    @action(detail=True)
+    def sermons(self, request, pk=None):
+        series = models.Series.objects.get(pk=pk)
+        sermons = series.sermons.all().order_by("date")
+        serializer = SermonSerializer(sermons, many=True)
+        return Response(serializer.data)

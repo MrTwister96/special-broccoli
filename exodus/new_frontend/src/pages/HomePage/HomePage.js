@@ -6,6 +6,7 @@ import Banner from "./Banner";
 import CardLink from "./CardLink";
 import congregation_image from "../../images/congregation_image.jpg";
 import { useNavigate } from "react-router-dom";
+import ErrorNotification from "../../components/ErrorNotification";
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ const HomePage = () => {
         <div>
             <NavBar />
             <CssBaseline />
+            <ErrorNotification />
             <Container maxWidth="lg" className="mt-5 mb-5 z-0">
                 <main>
                     <Banner />

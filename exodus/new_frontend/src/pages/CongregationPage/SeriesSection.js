@@ -10,8 +10,10 @@ import {
     ListItemButton,
     ListItemText,
     Pagination,
+    ListItemIcon,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import LaunchIcon from "@mui/icons-material/Launch";
 import axios from "axios";
 import { baseURL } from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
@@ -172,6 +174,9 @@ const SeriesSection = ({ congregationId }) => {
                                                 primary={item.name}
                                                 secondary={`Kategorie: ${item.category_name}`}
                                             />
+                                            <ListItemIcon className="justify-center">
+                                                <LaunchIcon />
+                                            </ListItemIcon>
                                         </ListItemButton>
                                     </ListItem>
                                 ))}
