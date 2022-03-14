@@ -177,7 +177,7 @@ const CongregationsPage = () => {
                                             <CongregationCard
                                                 id={item.id}
                                                 name={item.name}
-                                                image={item.image_file}
+                                                image={`${baseURL}/api/congregations/${item.id}/image_file`}
                                                 slug={item.slug}
                                             />
                                         </Grid>

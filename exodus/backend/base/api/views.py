@@ -28,12 +28,6 @@ def getRoutes(request):
 
     return Response(routes)
 
-@api_view(['GET'])
-def getCongregations(request):
-    congregations = models.Congregation.objects.all()
-    serializer = CongregationSerializer(congregations, many=True)
-    return Response(serializer.data)
-
 
 class CongregationViewSet(FiltersMixin, viewsets.ModelViewSet):
     serializer_class = serializers.CongregationSerializer
@@ -50,6 +44,21 @@ class CongregationViewSet(FiltersMixin, viewsets.ModelViewSet):
         else:
             permission_classes = [IsAuthenticatedOrReadOnly]
         return [permission() for permission in permission_classes]
+    
+    @action(detail=True)
+    def image_file(self, request, pk=None):
+        congregation = models.Congregation.objects.get(pk=pk)
+        image_file = congregation.image_file
+        extention = image_file.name.split(".")[-1]
+
+        with open(image_file.path, "rb") as fh:
+            response = HttpResponse(fh.read(), content_type="image/jpg")
+            response['Content-Disposition'] = f'filename={congregation.slug}.{extention}'
+            response['Accept-Ranges'] = 'bytes'
+            response['X-Sendfile'] = image_file.path
+            response['Content-Length'] = os.path.getsize(image_file.path)
+
+        return response
 
 class SermonViewSet(FiltersMixin, viewsets.ModelViewSet):
     serializer_class = serializers.SermonSerializer
