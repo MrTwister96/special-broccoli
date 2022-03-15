@@ -4,10 +4,10 @@ import dayjs from "dayjs";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 
-// export const baseURL = "http://192.168.0.208:8000";
-export const baseURL = "https://api.egklank.co.za";
-// export const baseAppURL = "http://192.168.0.208:3000";
-export const baseAppURL = "https://new.egklank.co.za";
+export const baseURL = "http://192.168.0.208:8000";
+// export const baseURL = "https://api.egklank.co.za";
+export const baseAppURL = "http://192.168.0.208:3000";
+// export const baseAppURL = "https://new.egklank.co.za";
 
 const useAxios = () => {
     const { authTokens, setUser, setAuthTokens } = useContext(AuthContext);
