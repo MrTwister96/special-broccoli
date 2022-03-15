@@ -15,6 +15,13 @@ python3 manage.py runserver 0.0.0.0:8000
 ```
 
 ## Setting up the Frontend
+### Environment Variables 
+```bash
+export REACT_APP_API_BASE_URL="URL OF THE API SERVER"
+export REACT_APP_FRONTEND_BASE_URL="URL OF THE REACT APP"
+```
+
+### Running frontend dev server
 ```bash
 cd frontend
 npm install
