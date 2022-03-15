@@ -238,6 +238,7 @@ const CreateSermonPage = () => {
     const [theme, setTheme] = useState("");
     const [book, setBook] = useState(null);
     const [scripture, setScripture] = useState("");
+    const [category, setCategory] = useState(null);
     const [congregation, setCongregation] = useState(null);
     const [preacher, setPreacher] = useState(null);
     const [audio_file, setAudioFile] = useState(null);
@@ -282,6 +283,7 @@ const CreateSermonPage = () => {
     const [congregations, setCongregations] = useState(null);
     const [series, setSeries] = useState(null);
     const [preachers, setPreachers] = useState(null);
+    const [categories, setCategories] = useState(null);
 
     // Initial Loading
     useEffect(() => {
@@ -302,9 +304,19 @@ const CreateSermonPage = () => {
             }
         };
 
+        const getCategories = async () => {
+            let response = await axios.get(`${baseURL}/api/categories`);
+
+            if (response.status === 200) {
+                setCategories(response.data);
+                console.log(response.data);
+            }
+        };
+
         const initializePage = async () => {
             await getCongregations();
             await getPreachers();
+            await getCategories();
 
             let response = await axios.get(`${baseURL}/api/series`);
             let items = [];
@@ -336,6 +348,10 @@ const CreateSermonPage = () => {
         form_data.append("theme", theme);
         form_data.append("scripture", `${book} ${scripture}`);
         form_data.append("preacher", preacher.id);
+        if (category !== null) {
+            form_data.append("category", category.id);
+        }
+
         if (congregation !== null) {
             form_data.append("congregation", congregation.id);
         }
@@ -513,6 +529,31 @@ const CreateSermonPage = () => {
                                                         onChange={
                                                             handleScriptureChange
                                                         }
+                                                    />
+                                                )}
+
+                                                {/* Category Field */}
+                                                {categories && (
+                                                    <Autocomplete
+                                                        disablePortal
+                                                        options={categories}
+                                                        onChange={(
+                                                            event,
+                                                            newValue
+                                                        ) => {
+                                                            setCategory(
+                                                                newValue
+                                                            );
+                                                        }}
+                                                        renderInput={(
+                                                            params
+                                                        ) => (
+                                                            <TextField
+                                                                {...params}
+                                                                label="Preek Kategorie"
+                                                                className="w-full"
+                                                            />
+                                                        )}
                                                     />
                                                 )}
 
