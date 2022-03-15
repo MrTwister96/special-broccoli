@@ -21,7 +21,7 @@ const CongregationCard = ({ id, name, image, slug }) => {
         <Card className="h-full">
             <CardActionArea
                 onClick={() => {
-                    navigate(`/gemeentes/${slug}`);
+                    navigate(`/gemeente/${slug}`);
                 }}
                 className="h-full"
             >
