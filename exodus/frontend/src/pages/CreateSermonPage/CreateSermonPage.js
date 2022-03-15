@@ -309,7 +309,6 @@ const CreateSermonPage = () => {
 
             if (response.status === 200) {
                 setCategories(response.data);
-                console.log(response.data);
             }
         };
 
