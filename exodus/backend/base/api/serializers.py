@@ -14,6 +14,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class CategorySerializer(ModelSerializer):
+    label = CharField(source="__str__")
+    
     class Meta:
         model = models.Category
         fields = "__all__"
