@@ -141,3 +141,15 @@ class SeriesViewSet(FiltersMixin, viewsets.ModelViewSet):
         sermons = series.sermons.all().order_by("date")
         serializer = SermonSerializer(sermons, many=True)
         return Response(serializer.data)
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CategorySerializer
+    queryset = models.Category.objects.all()
+
+    def get_permissions(self):
+        edit_actions = ["create", "update", "partial_update", "destroy"]
+        if self.action in edit_actions:
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticatedOrReadOnly]
+        return [permission() for permission in permission_classes]

@@ -8,6 +8,7 @@ router.register(r'congregations', views.CongregationViewSet, basename='congregat
 router.register(r'sermons', views.SermonViewSet, basename='sermon')
 router.register(r'preachers', views.PeacherViewSet, basename='preacher')
 router.register(r'series', views.SeriesViewSet, basename='series')
+router.register(r'categories', views.CategoryViewSet, basename='categories')
 
 urlpatterns = [
     path('', include(router.urls)),

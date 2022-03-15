@@ -12,6 +12,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
+
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = models.Category
+        fields = "__all__"
+
 class SermonSerializer(ModelSerializer):
     preacher_label = CharField(source="preacher.label", required=False)
     audio_file_size = IntegerField(source="audio_file.size", required=False)
