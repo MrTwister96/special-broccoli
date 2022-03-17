@@ -41,7 +41,6 @@ const CongregationPage = () => {
 
                 setSermons(sermonsResponse.data);
                 setFilteredSermons(sermonsResponse.data);
-                console.log(sermonsResponse.data);
                 setLoading(false);
             } catch (error) {
                 if (error.response?.status === 404) {
@@ -56,6 +55,10 @@ const CongregationPage = () => {
         };
 
         initialize();
+        
+        // I don't know why but the page scrolls to the middle
+        // after loading..
+        window.scrollTo(0, 0);
         // eslint-disable-next-line
     }, []);
 

@@ -39,6 +39,7 @@ class PreacherSerializer(ModelSerializer):
 class SeriesSerializer(ModelSerializer):
     label = CharField(source="getLabel")
     category_name = CharField(source="category")
+    congregation_name = CharField(source="congregation")
     # sermons = SermonSerializer(many=True, read_only=True)
     class Meta:
         model = models.Series
