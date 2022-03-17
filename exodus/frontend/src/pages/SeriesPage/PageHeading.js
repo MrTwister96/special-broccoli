@@ -19,8 +19,19 @@ const PageHeading = ({ series, search }) => {
                     color="text.primary"
                     gutterBottom
                 >
-                    {series.label}
+                    {series.name}
                 </Typography>
+                {series.congregation_name && (
+                    <Typography
+                        component="h1"
+                        variant="h2"
+                        align="center"
+                        color="text.primary"
+                        gutterBottom
+                    >
+                        ({series.congregation_name})
+                    </Typography>
+                )}
                 {/* <Typography
                             variant="h5"
                             align="center"

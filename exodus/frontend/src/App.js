@@ -15,7 +15,22 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 const theme = createTheme();
 
+theme.typography.h2 = {
+    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+    fontWeight: 300,
+    lineHeight: 1.2,
+    letterSpacing: "-0.00833em",
+    fontSize: "2rem",
+    [theme.breakpoints.up("md")]: {
+        fontSize: "3.75rem",
+    },
+};
+
 theme.typography.h3 = {
+    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+    fontWeight: 400,
+    lineHeight: 1.167,
+    letterSpacing: "0em",
     fontSize: "1.6rem",
     "@media (min-width:600px)": {
         fontSize: "2rem",
@@ -26,6 +41,10 @@ theme.typography.h3 = {
 };
 
 theme.typography.h5 = {
+    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+    fontWeight: 400,
+    lineHeight: 1.334,
+    letterSpacing: "0em",
     fontSize: "0.9rem",
     [theme.breakpoints.up("sm")]: {
         fontSize: "1.5rem",
