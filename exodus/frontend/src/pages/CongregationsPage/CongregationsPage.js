@@ -11,6 +11,8 @@ import {
     Container,
 } from "@mui/material";
 
+import { useNavigate } from "react-router-dom";
+
 import NavBar from "../../components/NavBar";
 import ErrorNotification from "../../components/ErrorNotification";
 import CongregationCard from "../../components/CongregationCard";
@@ -23,7 +25,7 @@ import notFound from "./notFound.svg";
 
 import { baseURL } from "../../hooks/useAxios";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+
 
 const CongregationsPage = () => {
     const { setLinkActive } = useContext(NavigationContext);
