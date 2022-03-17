@@ -56,6 +56,9 @@ const CongregationPage = () => {
         };
 
         initialize();
+        // I don't know why but the page scrolls to the middle
+        // after loading..
+        window.scrollTo(0, 0)
         // eslint-disable-next-line
     }, []);
 
