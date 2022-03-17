@@ -9,9 +9,6 @@ import {
     Container,
     CardActionArea,
     Grid,
-    Stack,
-    Box,
-    TextField,
 } from "@mui/material";
 import StoreContext from "../../context/StoreContext";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,7 +16,6 @@ import PageHeading from "./PageHeading";
 import axios from "axios";
 import { baseURL } from "../../hooks/useAxios";
 import dayjs from "dayjs";
-import SearchIcon from "@mui/icons-material/Search";
 
 const CongregationPage = () => {
     let { seriesId } = useParams();
@@ -93,36 +89,7 @@ const CongregationPage = () => {
                     </div>
                 ) : (
                     <>
-                        <PageHeading series={series} />
-                        <Stack
-                            sx={{ mt: 5, mb: 4 }}
-                            direction="row"
-                            spacing={2}
-                            justifyContent="center"
-                        >
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "flex-end",
-                                    minWidth: "80%",
-                                }}
-                            >
-                                <SearchIcon
-                                    sx={{
-                                        color: "action.active",
-                                        mr: 1,
-                                        my: 0.5,
-                                    }}
-                                />
-                                <TextField
-                                    fullWidth
-                                    label="Soek Preek"
-                                    name="Soek"
-                                    variant="standard"
-                                    onChange={search}
-                                />
-                            </Box>
-                        </Stack>
+                        <PageHeading series={series} search={search} />
                         <Container maxWidth="lg" className="mt-5 mb-5 z-0">
                             <Grid container spacing={4}>
                                 {filteredSermons.map((item, index) => (
