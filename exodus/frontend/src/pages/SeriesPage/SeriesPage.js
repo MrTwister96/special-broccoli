@@ -44,7 +44,7 @@ const CongregationPage = () => {
                 console.log(sermonsResponse.data);
                 setLoading(false);
             } catch (error) {
-                if (error.response.status === 404) {
+                if (error.response?.status === 404) {
                     raiseError(
                         `Geen reeks met id: ${seriesId}. Kies n reeks wat bestaan`
                     );

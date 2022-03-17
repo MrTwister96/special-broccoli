@@ -38,29 +38,33 @@ const SeriesSection = ({ congregationId }) => {
 
     useEffect(() => {
         const getSeries = async () => {
-            let seriesData = [];
+            try {
+                let seriesData = [];
 
-            let response = await axios.get(
-                `${baseURL}/api/series/?congregation=${congregationId}`
-            );
+                let response = await axios.get(
+                    `${baseURL}/api/series/?congregation=${congregationId}`
+                );
 
-            if (response.data.length !== 0) {
-                response.data.forEach((item) => {
-                    if (item.congregation === congregationId) {
-                        seriesData = [...seriesData, item];
-                    }
-                });
+                if (response.data.length !== 0) {
+                    response.data.forEach((item) => {
+                        if (item.congregation === congregationId) {
+                            seriesData = [...seriesData, item];
+                        }
+                    });
 
-                setSeries(seriesData);
-                setFilteredSeries(seriesData);
-                setPages(Math.ceil(seriesData.length / seriesPerPage));
-            } else {
-                setSeries([]);
-                setFilteredSeries([]);
-                setPages(0);
+                    setSeries(seriesData);
+                    setFilteredSeries(seriesData);
+                    setPages(Math.ceil(seriesData.length / seriesPerPage));
+                } else {
+                    setSeries([]);
+                    setFilteredSeries([]);
+                    setPages(0);
+                }
+
+                setLoading(false);
+            } catch (error) {
+                setLoading(true);
             }
-
-            setLoading(false);
         };
 
         getSeries();
