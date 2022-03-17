@@ -36,31 +36,40 @@ const CongregationPage = () => {
     };
 
     const initialize = async () => {
-        let congregationResponse = await axios.get(
-            `${baseURL}/api/congregations/?slug=${slug}`
-        );
+        try {
+            let congregationResponse = await axios.get(
+                `${baseURL}/api/congregations/?slug=${slug}`
+            );
 
-        if (congregationResponse.data.length !== 0) {
-            congregationResponse.data.forEach(async (item) => {
-                if (item.slug === slug) {
-                    setCongregation(item);
+            if (congregationResponse.data.length !== 0) {
+                congregationResponse.data.forEach(async (item) => {
+                    if (item.slug === slug) {
+                        setCongregation(item);
 
-                    let sermonsResponse = await axios.get(
-                        `${baseURL}/api/sermons/?congregation=${item.id}`
-                    );
+                        let sermonsResponse = await axios.get(
+                            `${baseURL}/api/sermons/?congregation=${item.id}`
+                        );
 
-                    setSermons(sermonsResponse.data);
-                    setGlobalSermons(sermonsResponse.data);
-                    setPages(
-                        Math.ceil(sermonsResponse.data.length / sermonsPerPage)
-                    );
+                        setSermons(sermonsResponse.data);
+                        setGlobalSermons(sermonsResponse.data);
+                        setPages(
+                            Math.ceil(
+                                sermonsResponse.data.length / sermonsPerPage
+                            )
+                        );
 
-                    setLoading(false);
-                }
-            });
-        } else {
+                        setLoading(false);
+                    }
+                });
+            } else {
+                raiseError(
+                    `"${slug}" is nie n bestaande gemeente nie. Kies n bestaande gemeente`
+                );
+                navigate("/gemeentes");
+            }
+        } catch (error) {
             raiseError(
-                `"${slug}" is nie n bestaande gemeente nie. Kies n bestaande gemeente`
+                "Gemeente kon nie gelaai word nie. Probeer weer later of raporteer die vout"
             );
             navigate("/gemeentes");
         }
