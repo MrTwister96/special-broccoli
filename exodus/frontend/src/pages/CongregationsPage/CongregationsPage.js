@@ -11,11 +11,14 @@ import {
     Container,
 } from "@mui/material";
 
+import { useNavigate } from "react-router-dom";
+
 import NavBar from "../../components/NavBar";
 import ErrorNotification from "../../components/ErrorNotification";
 import CongregationCard from "../../components/CongregationCard";
 
 import NavigationContext from "../../context/NavigationContext";
+import StoreContext from "../../context/StoreContext";
 
 import SearchIcon from "@mui/icons-material/Search";
 import notFound from "./notFound.svg";
@@ -23,20 +26,30 @@ import notFound from "./notFound.svg";
 import { baseURL } from "../../hooks/useAxios";
 import axios from "axios";
 
+
 const CongregationsPage = () => {
     const { setLinkActive } = useContext(NavigationContext);
+    const { raiseError } = useContext(StoreContext);
     const [congregations, setCongregations] = useState(null);
     const [globalCongregations, setGlobalCongregations] = useState(null);
     const [searchParam] = useState(["name"]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const initialize = async () => {
-        let response = await axios.get(`${baseURL}/api/congregations/`);
+        try {
+            let response = await axios.get(`${baseURL}/api/congregations/`);
 
-        setCongregations(response.data);
-        setGlobalCongregations(response.data);
+            setCongregations(response.data);
+            setGlobalCongregations(response.data);
 
-        setLoading(false);
+            setLoading(false);
+        } catch (error) {
+            raiseError(
+                "Gemeentes kon nie gelaai word nie. Probeer weer later of raporteer die vout"
+            );
+            navigate("/");
+        }
     };
 
     useEffect(() => {

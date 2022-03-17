@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import NavBar from "../../components/NavBar";
 import {
     CssBaseline,
@@ -11,7 +11,8 @@ import {
     Avatar,
     IconButton,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import { baseAppURL, baseURL } from "../../hooks/useAxios";
 
@@ -27,18 +28,29 @@ import ChurchIcon from "@mui/icons-material/Church";
 
 import { WhatsappShareButton, WhatsappIcon } from "react-share";
 
+import StoreContext from "../../context/StoreContext";
+
 const SermonPage = () => {
     let { sermonId } = useParams();
     const [sermon, setSermon] = useState(null);
+    const { raiseError } = useContext(StoreContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getSermon = async () => {
-            let response = await axios.get(
-                `${baseURL}/api/sermons/${sermonId}`
-            );
+            try {
+                let response = await axios.get(
+                    `${baseURL}/api/sermons/${sermonId}`
+                );
 
-            if (response.status === 200) {
-                setSermon(response.data);
+                if (response.status === 200) {
+                    setSermon(response.data);
+                }
+            } catch (error) {
+                raiseError(
+                    "Preek kon nie gelaai word nie. Probeer weer later of raporteer die vout"
+                );
+                navigate("/");
             }
         };
 

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAxios from "../../hooks/useAxios";
 import NavigationContext from "../../context/NavigationContext";
+import StoreContext from "../../context/StoreContext";
 
 // UI
 import {
@@ -225,6 +226,7 @@ const bibleBooks = [
 ];
 
 const CreateSermonPage = () => {
+    const { raiseError } = useContext(StoreContext);
     const { setAllLinksInactive } = useContext(NavigationContext);
     const navigate = useNavigate();
     const api = useAxios();
@@ -289,27 +291,47 @@ const CreateSermonPage = () => {
     useEffect(() => {
         setAllLinksInactive();
         const getCongregations = async () => {
-            let response = await axios.get(`${baseURL}/api/congregations`);
+            try {
+                let response = await axios.get(`${baseURL}/api/congregations`);
 
-            if (response.status === 200) {
-                setCongregations(response.data);
+                if (response.status === 200) {
+                    setCongregations(response.data);
+                }
+            } catch (error) {
+                raiseError(
+                    "Daar was n vout. Probeer weer of raporteer die vout"
+                );
+                navigate("/");
             }
         };
 
         const getPreachers = async () => {
-            let response = await axios.get(`${baseURL}/api/preachers`);
+            try {
+                let response = await axios.get(`${baseURL}/api/preachers`);
 
-            if (response.status === 200) {
-                setPreachers(response.data);
+                if (response.status === 200) {
+                    setPreachers(response.data);
+                }
+            } catch (error) {
+                raiseError(
+                    "Daar was n vout. Probeer weer of raporteer die vout"
+                );
+                navigate("/");
             }
         };
 
         const getCategories = async () => {
-            let response = await axios.get(`${baseURL}/api/categories`);
+            try {
+                let response = await axios.get(`${baseURL}/api/categories`);
 
-            if (response.status === 200) {
-                setCategories(response.data);
-                console.log(response.data);
+                if (response.status === 200) {
+                    setCategories(response.data);
+                }
+            } catch (error) {
+                raiseError(
+                    "Daar was n vout. Probeer weer of raporteer die vout"
+                );
+                navigate("/");
             }
         };
 
@@ -335,7 +357,12 @@ const CreateSermonPage = () => {
             setLoading(false);
         };
 
-        initializePage();
+        try {
+            initializePage();
+        } catch (error) {
+            raiseError("Daar was n vout. Probeer weer of raporteer die vout");
+            navigate("/");
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -360,22 +387,29 @@ const CreateSermonPage = () => {
         }
         form_data.append("audio_file", audio_file, audio_file.name);
 
-        let response = await api.post("/api/sermons/", form_data, {
-            headers: {
-                "content-type": "multipart/form-data",
-            },
-        });
-
-        if (response.status === 201) {
-            let notify = await swal({
-                title: "Preek Geskep!",
-                text: `Tema: ${response.data.theme}`,
-                icon: "success",
+        try {
+            let response = await api.post("/api/sermons/", form_data, {
+                headers: {
+                    "content-type": "multipart/form-data",
+                },
             });
 
-            if (notify === true) {
-                navigate("/");
+            if (response.status === 201) {
+                let notify = await swal({
+                    title: "Preek Geskep!",
+                    text: `Tema: ${response.data.theme}`,
+                    icon: "success",
+                });
+
+                if (notify === true) {
+                    navigate("/");
+                }
             }
+        } catch (error) {
+            raiseError(
+                "Kon nie die boodskap skep nie. Probeer weer of raporteer die probleem"
+            );
+            navigate("/");
         }
     };
 
@@ -383,18 +417,25 @@ const CreateSermonPage = () => {
         setCongregation(newValue);
 
         if (newValue !== null) {
-            let response = await axios.get(
-                `${baseURL}/api/series/?congregation=${newValue.id}`
-            );
+            try {
+                let response = await axios.get(
+                    `${baseURL}/api/series/?congregation=${newValue.id}`
+                );
 
-            if (response.status === 200) {
-                if (response.data.length !== 0) {
-                    setSerie(null);
-                    setSeries(response.data);
-                } else {
-                    setSerie(null);
-                    setSeries(null);
+                if (response.status === 200) {
+                    if (response.data.length !== 0) {
+                        setSerie(null);
+                        setSeries(response.data);
+                    } else {
+                        setSerie(null);
+                        setSeries(null);
+                    }
                 }
+            } catch (error) {
+                raiseError(
+                    "Daar was n vout. Probeer weer of raporteer die vout"
+                );
+                navigate("/");
             }
         }
     };

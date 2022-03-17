@@ -41,7 +41,7 @@ const Dropzone = (data) => {
         dropArea.current.classList.add("scale-105");
         dropArea.current.classList.remove("scale-100");
     });
-    
+
     // eslint-disable-next-line
     const onDragLeave = useCallback(() => {
         dropArea.current.classList.remove("bg-blue-50");
@@ -82,8 +82,9 @@ const Dropzone = (data) => {
                     <div
                         className="flex text-sm text-gray-600"
                         {...getRootProps()}
+                        onClick={(e) => e.stopPropagation}
                     >
-                        <label
+                        <div
                             htmlFor="file-upload"
                             className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                         >
@@ -96,7 +97,7 @@ const Dropzone = (data) => {
                                 className="sr-only"
                                 accept="audio/mpeg"
                             />
-                        </label>
+                        </div>
                         <p className="pl-1">or drag and drop</p>
                     </div>
                     <p className="text-xs text-gray-500">MP3 up to 60MB</p>
