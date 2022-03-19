@@ -26,6 +26,7 @@ import { baseAppURL, baseURL } from "../../hooks/useAxios";
 import filesize from "filesize";
 import { useNavigate } from "react-router-dom";
 import { WhatsappShareButton, WhatsappIcon } from "react-share";
+import notFound from "../../images/notFound.svg";
 
 const SermonsSection = ({
     sermons,
@@ -101,44 +102,49 @@ const SermonsSection = ({
                     </Box>
                 </Stack>
             )}
-
-            {sermons.map((item) => (
-                <Accordion
-                    key={item.id}
-                    expanded={expanded === item.id}
-                    onChange={handleChange(item.id)}
-                    sx={{
-                        bgcolor: "action.hover",
-                    }}
-                >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
+            {sermons.length === 0 ? (
+                <div className="justify-center flex flex-col my-5">
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        className="text-center"
                     >
-                        <div className="flex flex-col w-full">
-                            <Typography
-                                sx={{
-                                    fontWeight: "bold",
-                                    fontSize: "subtitle2.fontSize",
-                                }}
-                                variant="overline"
-                                className="break-all"
+                        Geen Resultate
+                    </Typography>
+                    <img
+                        className="h-48 w-auto mt-16"
+                        src={notFound}
+                        alt="Geen Resultate"
+                    />
+                </div>
+            ) : (
+                <>
+                    {sermons.map((item) => (
+                        <Accordion
+                            key={item.id}
+                            expanded={expanded === item.id}
+                            onChange={handleChange(item.id)}
+                            sx={{
+                                bgcolor: "action.hover",
+                            }}
+                        >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
                             >
-                                {item.theme}
-                            </Typography>
-                            {/* <Divider />
-                            <Typography
-                                sx={{
-                                    fontWeight: "bold",
-                                    color: "text.secondary",
-                                    fontSize: "subtitle2.fontSize",
-                                }}
-                                variant="overline"
-                                className="break-all"
-                            >
-                                {item.scripture}
-                                <Divider />
+                                <div className="flex flex-col w-full">
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "bold",
+                                            fontSize: "subtitle2.fontSize",
+                                        }}
+                                        variant="overline"
+                                        className="break-all"
+                                    >
+                                        {item.theme}
+                                    </Typography>
+                                    {/* <Divider />
                                 <Typography
                                     sx={{
                                         fontWeight: "bold",
@@ -148,106 +154,124 @@ const SermonsSection = ({
                                     variant="overline"
                                     className="break-all"
                                 >
-                                    {item.preacher_label}
-                                </Typography>
-                            </Typography> */}
-                            <Divider />
-                            <Typography
-                                sx={{
-                                    color: "text.secondary",
-                                    fontSize: "subtitle2.fontSize",
-                                }}
-                                variant="overline"
-                                className="break-all"
-                            >
-                                {dayjs(item.date).format("DD MMM YYYY HH:mm A")}
-                            </Typography>
-                        </div>
-                    </AccordionSummary>
-                    <AccordionDetails className="flex flex-col">
-                        <Paper className="p-2" elevation={4}>
-                            <div className="flex flex-row">
-                                <Typography
-                                    variant="overline"
-                                    sx={{
-                                        fontWeight: "bold",
-                                    }}
-                                    mr={2}
-                                >
-                                    Prediker:
-                                </Typography>
-                                <Typography variant="overline">
-                                    {item.preacher_label}
-                                </Typography>
-                            </div>
-                            <div className="flex flex-row">
-                                <Typography
-                                    variant="overline"
-                                    sx={{
-                                        fontWeight: "bold",
-                                    }}
-                                    mr={2}
-                                >
-                                    Tema:
-                                </Typography>
-                                <Typography variant="overline">
-                                    {item.theme}
-                                </Typography>
-                            </div>
-                            <div className="flex flex-row">
-                                <Typography
-                                    variant="overline"
-                                    sx={{
-                                        fontWeight: "bold",
-                                    }}
-                                    mr={2}
-                                >
-                                    Skriflesing:
-                                </Typography>
-                                <Typography variant="overline">
                                     {item.scripture}
-                                </Typography>
-                            </div>
-                        </Paper>
-                    </AccordionDetails>
-                    <AccordionActions className="flex flex-col md:flex-row ">
-                        <Button
-                            startIcon={<DownloadIcon />}
-                            variant="contained"
-                            component="a"
-                            href={`${baseURL}/api/sermons/${item.id}/get_audio/`}
-                        >
-                            Aflaai ({filesize(item.audio_file_size)})
-                        </Button>
-                        <div className="mt-2 md:mt-0 md:ml-2">
-                            <Button
-                                startIcon={<HeadsetIcon />}
-                                variant="contained"
-                                component="a"
-                                onClick={() => {
-                                    navigate(`/preke/${item.id}`);
-                                }}
-                            >
-                                Luister
-                            </Button>
-                        </div>
-
-                        <div className="md:ml-2">
-                            <IconButton
-                                color="primary"
-                                aria-label="download"
-                                component="div"
-                            >
-                                <WhatsappShareButton
-                                    url={`${baseAppURL}/preke/${item.id}/`}
+                                    <Divider />
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "bold",
+                                            color: "text.secondary",
+                                            fontSize: "subtitle2.fontSize",
+                                        }}
+                                        variant="overline"
+                                        className="break-all"
+                                    >
+                                        {item.preacher_label}
+                                    </Typography>
+                                </Typography> */}
+                                    <Divider />
+                                    <Typography
+                                        sx={{
+                                            color: "text.secondary",
+                                            fontSize: "subtitle2.fontSize",
+                                        }}
+                                        variant="overline"
+                                        className="break-all"
+                                    >
+                                        {dayjs(item.date).format(
+                                            "DD MMM YYYY HH:mm A"
+                                        )}
+                                    </Typography>
+                                </div>
+                            </AccordionSummary>
+                            <AccordionDetails className="flex flex-col">
+                                <Paper className="p-2" elevation={4}>
+                                    <div className="flex flex-row">
+                                        <Typography
+                                            variant="overline"
+                                            sx={{
+                                                fontWeight: "bold",
+                                            }}
+                                            mr={2}
+                                        >
+                                            Prediker:
+                                        </Typography>
+                                        <Typography variant="overline">
+                                            {item.preacher_label}
+                                        </Typography>
+                                    </div>
+                                    <div className="flex flex-row">
+                                        <Typography
+                                            variant="overline"
+                                            sx={{
+                                                fontWeight: "bold",
+                                            }}
+                                            mr={2}
+                                        >
+                                            Tema:
+                                        </Typography>
+                                        <Typography variant="overline">
+                                            {item.theme}
+                                        </Typography>
+                                    </div>
+                                    <div className="flex flex-row">
+                                        <Typography
+                                            variant="overline"
+                                            sx={{
+                                                fontWeight: "bold",
+                                            }}
+                                            mr={2}
+                                        >
+                                            Skriflesing:
+                                        </Typography>
+                                        <Typography variant="overline">
+                                            {item.scripture}
+                                        </Typography>
+                                    </div>
+                                </Paper>
+                            </AccordionDetails>
+                            <AccordionActions className="flex flex-col md:flex-row ">
+                                <Button
+                                    startIcon={<DownloadIcon />}
+                                    variant="contained"
+                                    component="a"
+                                    href={`${baseURL}/api/sermons/${item.id}/get_audio/`}
                                 >
-                                    <WhatsappIcon size={32} round={true} />
-                                </WhatsappShareButton>
-                            </IconButton>
-                        </div>
-                    </AccordionActions>
-                </Accordion>
-            ))}
+                                    Aflaai ({filesize(item.audio_file_size)})
+                                </Button>
+                                <div className="mt-2 md:mt-0 md:ml-2">
+                                    <Button
+                                        startIcon={<HeadsetIcon />}
+                                        variant="contained"
+                                        component="a"
+                                        onClick={() => {
+                                            navigate(`/preke/${item.id}`);
+                                        }}
+                                    >
+                                        Luister
+                                    </Button>
+                                </div>
+
+                                <div className="md:ml-2">
+                                    <IconButton
+                                        color="primary"
+                                        aria-label="download"
+                                        component="div"
+                                    >
+                                        <WhatsappShareButton
+                                            url={`${baseAppURL}/preke/${item.id}/`}
+                                        >
+                                            <WhatsappIcon
+                                                size={32}
+                                                round={true}
+                                            />
+                                        </WhatsappShareButton>
+                                    </IconButton>
+                                </div>
+                            </AccordionActions>
+                        </Accordion>
+                    ))}
+                </>
+            )}
         </>
     );
 };

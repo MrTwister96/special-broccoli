@@ -21,11 +21,10 @@ import NavigationContext from "../../context/NavigationContext";
 import StoreContext from "../../context/StoreContext";
 
 import SearchIcon from "@mui/icons-material/Search";
-import notFound from "./notFound.svg";
+import notFound from "../../images/notFound.svg";
 
 import { baseURL } from "../../hooks/useAxios";
 import axios from "axios";
-
 
 const CongregationsPage = () => {
     const { setLinkActive } = useContext(NavigationContext);
