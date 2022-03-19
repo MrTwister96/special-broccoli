@@ -1,5 +1,5 @@
 {
-    "short_name": "Evangelies Gereformeerde Kerk van Suid-Afrika: Klank Bediening",
+    "short_name": "EG Klank",
     "name": "Evangelies Gereformeerde Kerk van Suid-Afrika: Klank Bediening",
     "icons": [
         {
@@ -21,5 +21,5 @@
     "start_url": ".",
     "display": "standalone",
     "theme_color": "#000000",
-    "background_color": "#1f2937"
+    "background_color": "#ffffff"
 }
