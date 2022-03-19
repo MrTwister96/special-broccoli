@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import LaunchIcon from "@mui/icons-material/Launch";
+import notFound from "../../images/notFound.svg";
 import axios from "axios";
 import { baseURL } from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
@@ -94,101 +95,136 @@ const SeriesSection = ({ congregationId }) => {
 
     return (
         <>
-            <Typography
-                className="w-full pb-3 text-center"
-                component="h1"
-                variant="h5"
-            >
-                Reekse ({series?.length})
-            </Typography>
-            <Stack
-                sx={{ mt: 1, mb: 2 }}
-                direction="row"
-                spacing={2}
-                justifyContent="center"
-            >
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "flex-end",
-                        minWidth: "80%",
-                    }}
-                >
-                    <SearchIcon
-                        sx={{
-                            color: "action.active",
-                            mr: 1,
-                            my: 0.5,
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        label="Soek Reeks"
-                        name="Soek"
-                        variant="standard"
-                        onChange={search}
-                    />
-                </Box>
-            </Stack>
-            <div className="mb-2">
-                {loading ? (
-                    <Skeleton variant="rectangular" height={150} />
-                ) : (
-                    <>
-                        {pages > 1 && (
-                            <Stack
-                                sx={{ mt: 1, mb: 2 }}
-                                direction="row"
-                                spacing={2}
-                                justifyContent="center"
-                            >
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        minWidth: "80%",
-                                    }}
-                                    className="justify-center"
-                                >
-                                    <Pagination
-                                        count={pages}
-                                        color="primary"
-                                        onChange={(event, page) => {
-                                            setCurrentPage(page);
-                                        }}
-                                    />
-                                </Box>
-                            </Stack>
-                        )}
-                        {currentSeries.length > 0 && (
-                            <List
+            {series?.length !== 0 && (
+                <>
+                    <Typography
+                        className="w-full pb-3 text-center"
+                        component="h1"
+                        variant="h5"
+                    >
+                        Reekse ({series?.length})
+                    </Typography>
+                    <Stack
+                        sx={{ mt: 1, mb: 2 }}
+                        direction="row"
+                        spacing={2}
+                        justifyContent="center"
+                    >
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "flex-end",
+                                minWidth: "80%",
+                            }}
+                        >
+                            <SearchIcon
                                 sx={{
-                                    width: "100%",
-                                    bgcolor: "action.hover",
+                                    color: "action.active",
+                                    mr: 1,
+                                    my: 0.5,
                                 }}
-                                className="rounded-lg"
-                            >
-                                {currentSeries.map((item) => (
-                                    <ListItem disablePadding key={item.id}>
-                                        <ListItemButton
-                                            onClick={() => {
-                                                navigate(`/reekse/${item.id}`);
-                                            }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Soek Reeks"
+                                name="Soek"
+                                variant="standard"
+                                onChange={search}
+                            />
+                        </Box>
+                    </Stack>
+                    <div className="mb-2">
+                        {loading ? (
+                            <Skeleton variant="rectangular" height={150} />
+                        ) : (
+                            <>
+                                {currentSeries.length === 0 ? (
+                                    <div className="justify-center flex flex-col my-5">
+                                        <Typography
+                                            component="h1"
+                                            variant="h5"
+                                            className="text-center"
                                         >
-                                            <ListItemText
-                                                primary={item.name}
-                                                secondary={`Kategorie: ${item.category_name}`}
-                                            />
-                                            <ListItemIcon className="justify-center">
-                                                <LaunchIcon />
-                                            </ListItemIcon>
-                                        </ListItemButton>
-                                    </ListItem>
-                                ))}
-                            </List>
+                                            Geen Resultate
+                                        </Typography>
+                                        <img
+                                            className="h-48 w-auto mt-16"
+                                            src={notFound}
+                                            alt="Geen Resultate"
+                                        />
+                                    </div>
+                                ) : (
+                                    <>
+                                        {pages > 1 && (
+                                            <Stack
+                                                sx={{ mt: 1, mb: 2 }}
+                                                direction="row"
+                                                spacing={2}
+                                                justifyContent="center"
+                                            >
+                                                <Box
+                                                    sx={{
+                                                        display: "flex",
+                                                        minWidth: "80%",
+                                                    }}
+                                                    className="justify-center"
+                                                >
+                                                    <Pagination
+                                                        count={pages}
+                                                        color="primary"
+                                                        onChange={(
+                                                            event,
+                                                            page
+                                                        ) => {
+                                                            setCurrentPage(
+                                                                page
+                                                            );
+                                                        }}
+                                                    />
+                                                </Box>
+                                            </Stack>
+                                        )}
+                                        {currentSeries.length > 0 && (
+                                            <List
+                                                sx={{
+                                                    width: "100%",
+                                                    bgcolor: "action.hover",
+                                                }}
+                                                className="rounded-lg"
+                                            >
+                                                {currentSeries.map((item) => (
+                                                    <ListItem
+                                                        disablePadding
+                                                        key={item.id}
+                                                    >
+                                                        <ListItemButton
+                                                            onClick={() => {
+                                                                navigate(
+                                                                    `/reekse/${item.id}`
+                                                                );
+                                                            }}
+                                                        >
+                                                            <ListItemText
+                                                                primary={
+                                                                    item.name
+                                                                }
+                                                                secondary={`Kategorie: ${item.category_name}`}
+                                                            />
+                                                            <ListItemIcon className="justify-center">
+                                                                <LaunchIcon />
+                                                            </ListItemIcon>
+                                                        </ListItemButton>
+                                                    </ListItem>
+                                                ))}
+                                            </List>
+                                        )}
+                                    </>
+                                )}
+                            </>
                         )}
-                    </>
-                )}
-            </div>
+                    </div>
+                </>
+            )}
         </>
     );
 };

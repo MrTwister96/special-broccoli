@@ -117,19 +117,23 @@ const CongregationPage = () => {
 
                             <Container sx={{ py: 5 }} maxWidth="lg">
                                 <Grid container spacing={2}>
-                                    <Grid item xs={12} sm={12} md={8}>
-                                        {sermons && (
-                                            <SermonsSection
-                                                sermons={currentSermons}
-                                                sermonCount={
-                                                    globalSermons?.length
-                                                }
-                                                search={search}
-                                                handlePaginate={handlePaginate}
-                                                pages={pages}
-                                            />
-                                        )}
-                                    </Grid>
+                                    {globalSermons?.length !== 0 && (
+                                        <Grid item xs={12} sm={12} md={8}>
+                                            {sermons && (
+                                                <SermonsSection
+                                                    sermons={currentSermons}
+                                                    sermonCount={
+                                                        globalSermons?.length
+                                                    }
+                                                    search={search}
+                                                    handlePaginate={
+                                                        handlePaginate
+                                                    }
+                                                    pages={pages}
+                                                />
+                                            )}
+                                        </Grid>
+                                    )}
                                     <Grid item xs={12} sm={12} md={4}>
                                         <SeriesSection
                                             congregationId={congregation.id}
