@@ -16,6 +16,7 @@ import PageHeading from "./PageHeading";
 import axios from "axios";
 import { baseURL } from "../../hooks/useAxios";
 import dayjs from "dayjs";
+import notFound from "../../images/notFound.svg";
 
 const CongregationPage = () => {
     let { seriesId } = useParams();
@@ -55,7 +56,7 @@ const CongregationPage = () => {
         };
 
         initialize();
-        
+
         // I don't know why but the page scrolls to the middle
         // after loading..
         window.scrollTo(0, 0);
@@ -94,67 +95,88 @@ const CongregationPage = () => {
                     <>
                         <PageHeading series={series} search={search} />
                         <Container maxWidth="lg" className="mt-5 mb-5 z-0">
-                            <Grid container spacing={4}>
-                                {filteredSermons.map((item, index) => (
-                                    <Grid
-                                        key={item.id}
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        lg={4}
+                            {filteredSermons.length === 0 ? (
+                                <div className="justify-center flex flex-col my-5">
+                                    <Typography
+                                        component="h1"
+                                        variant="h4"
+                                        className="text-center"
                                     >
-                                        <Card className="h-full">
-                                            <CardActionArea
-                                                className="h-full"
-                                                onClick={() => {
-                                                    navigate(
-                                                        `/preke/${item.id}`
-                                                    );
-                                                }}
-                                            >
-                                                <CardContent className="h-full flex flex-col justify-between">
-                                                    <Typography
-                                                        sx={{
-                                                            fontSize: 14,
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        color="text.secondary"
-                                                        gutterBottom
-                                                    >
-                                                        Boodskap {(index += 1)}/
-                                                        {sermons.length}
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="h5"
-                                                        component="div"
-                                                        mb={2}
-                                                    >
-                                                        {item.theme}
-                                                    </Typography>
-                                                    <Typography
-                                                        sx={{ mb: 1.5 }}
-                                                        color="text.secondary"
-                                                    >
-                                                        {dayjs(
-                                                            item.date
-                                                        ).format(
-                                                            "DD MMM YYYY HH:mm A"
-                                                        )}
-                                                    </Typography>
-                                                    <Typography variant="body2">
-                                                        Skriflesing:{" "}
-                                                        {item.scripture}
-                                                        <br />
-                                                        Prediker:{" "}
-                                                        {item.preacher_label}
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
-                                    </Grid>
-                                ))}
-                            </Grid>
+                                        Geen Resultate
+                                    </Typography>
+                                    <img
+                                        className="h-64 w-auto mt-16"
+                                        src={notFound}
+                                        alt="Geen Resultate"
+                                    />
+                                </div>
+                            ) : (
+                                <Grid container spacing={4}>
+                                    {filteredSermons.map((item, index) => (
+                                        <Grid
+                                            key={item.id}
+                                            item
+                                            xs={12}
+                                            sm={12}
+                                            md={6}
+                                            lg={4}
+                                        >
+                                            <Card className="h-full">
+                                                <CardActionArea
+                                                    className="h-full"
+                                                    onClick={() => {
+                                                        navigate(
+                                                            `/preke/${item.id}`
+                                                        );
+                                                    }}
+                                                >
+                                                    <CardContent className="h-full flex flex-col justify-between">
+                                                        <Typography
+                                                            sx={{
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    "bold",
+                                                            }}
+                                                            color="text.secondary"
+                                                            gutterBottom
+                                                        >
+                                                            Boodskap{" "}
+                                                            {(index += 1)}/
+                                                            {sermons.length}
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="h5"
+                                                            component="div"
+                                                            mb={2}
+                                                        >
+                                                            {item.theme}
+                                                        </Typography>
+                                                        <Typography
+                                                            sx={{ mb: 1.5 }}
+                                                            color="text.secondary"
+                                                        >
+                                                            {dayjs(
+                                                                item.date
+                                                            ).format(
+                                                                "DD MMM YYYY HH:mm A"
+                                                            )}
+                                                        </Typography>
+                                                        <Typography variant="body2">
+                                                            Skriflesing:{" "}
+                                                            {item.scripture}
+                                                            <br />
+                                                            Prediker:{" "}
+                                                            {
+                                                                item.preacher_label
+                                                            }
+                                                        </Typography>
+                                                    </CardContent>
+                                                </CardActionArea>
+                                            </Card>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            )}
                         </Container>
                     </>
                 )}
