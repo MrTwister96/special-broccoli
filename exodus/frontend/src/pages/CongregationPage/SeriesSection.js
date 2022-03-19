@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import LaunchIcon from "@mui/icons-material/Launch";
+import notFound from "../../images/notFound.svg";
 import axios from "axios";
 import { baseURL } from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
@@ -135,56 +136,80 @@ const SeriesSection = ({ congregationId }) => {
                     <Skeleton variant="rectangular" height={150} />
                 ) : (
                     <>
-                        {pages > 1 && (
-                            <Stack
-                                sx={{ mt: 1, mb: 2 }}
-                                direction="row"
-                                spacing={2}
-                                justifyContent="center"
-                            >
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        minWidth: "80%",
-                                    }}
-                                    className="justify-center"
+                        {currentSeries.length === 0 ? (
+                            <div className="justify-center flex flex-col my-5">
+                                <Typography
+                                    component="h1"
+                                    variant="h5"
+                                    className="text-center"
                                 >
-                                    <Pagination
-                                        count={pages}
-                                        color="primary"
-                                        onChange={(event, page) => {
-                                            setCurrentPage(page);
-                                        }}
-                                    />
-                                </Box>
-                            </Stack>
-                        )}
-                        {currentSeries.length > 0 && (
-                            <List
-                                sx={{
-                                    width: "100%",
-                                    bgcolor: "action.hover",
-                                }}
-                                className="rounded-lg"
-                            >
-                                {currentSeries.map((item) => (
-                                    <ListItem disablePadding key={item.id}>
-                                        <ListItemButton
-                                            onClick={() => {
-                                                navigate(`/reekse/${item.id}`);
+                                    Geen Resultate
+                                </Typography>
+                                <img
+                                    className="h-48 w-auto mt-16"
+                                    src={notFound}
+                                    alt="Geen Resultate"
+                                />
+                            </div>
+                        ) : (
+                            <>
+                                {pages > 1 && (
+                                    <Stack
+                                        sx={{ mt: 1, mb: 2 }}
+                                        direction="row"
+                                        spacing={2}
+                                        justifyContent="center"
+                                    >
+                                        <Box
+                                            sx={{
+                                                display: "flex",
+                                                minWidth: "80%",
                                             }}
+                                            className="justify-center"
                                         >
-                                            <ListItemText
-                                                primary={item.name}
-                                                secondary={`Kategorie: ${item.category_name}`}
+                                            <Pagination
+                                                count={pages}
+                                                color="primary"
+                                                onChange={(event, page) => {
+                                                    setCurrentPage(page);
+                                                }}
                                             />
-                                            <ListItemIcon className="justify-center">
-                                                <LaunchIcon />
-                                            </ListItemIcon>
-                                        </ListItemButton>
-                                    </ListItem>
-                                ))}
-                            </List>
+                                        </Box>
+                                    </Stack>
+                                )}
+                                {currentSeries.length > 0 && (
+                                    <List
+                                        sx={{
+                                            width: "100%",
+                                            bgcolor: "action.hover",
+                                        }}
+                                        className="rounded-lg"
+                                    >
+                                        {currentSeries.map((item) => (
+                                            <ListItem
+                                                disablePadding
+                                                key={item.id}
+                                            >
+                                                <ListItemButton
+                                                    onClick={() => {
+                                                        navigate(
+                                                            `/reekse/${item.id}`
+                                                        );
+                                                    }}
+                                                >
+                                                    <ListItemText
+                                                        primary={item.name}
+                                                        secondary={`Kategorie: ${item.category_name}`}
+                                                    />
+                                                    <ListItemIcon className="justify-center">
+                                                        <LaunchIcon />
+                                                    </ListItemIcon>
+                                                </ListItemButton>
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                )}
+                            </>
                         )}
                     </>
                 )}
