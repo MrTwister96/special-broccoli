@@ -1,10 +1,41 @@
 from email.mime import image
+from email.policy import default
+from statistics import mode
 from unicodedata import category
 from django.db import models
 from uuid import uuid4
 from phonenumber_field.modelfields import PhoneNumberField
 from django.dispatch import receiver
 import os
+from django.contrib.auth.models import User
+
+def profile_permissions():
+    return ["normal_user",]
+
+def congregations():
+    return []
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    permissions = models.JSONField(verbose_name="Permissions", default=profile_permissions)
+    congregations = models.JSONField(verbose_name="congregations", default=congregations, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Profile'
+        verbose_name_plural = 'Profiles'
+    
+    def __str__(self):
+        return f"{self.user}"
+
+
+@receiver(models.signals.post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(models.signals.post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 def image_path(instance, filename):
     return f'images/{str(uuid4())}_{filename}'

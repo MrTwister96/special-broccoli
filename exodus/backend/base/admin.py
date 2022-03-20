@@ -1,6 +1,7 @@
 from django.contrib import admin
 from base import models
 
+admin.site.register(models.Profile)
 admin.site.register(models.Congregation)
 admin.site.register(models.Preacher)
 admin.site.register(models.Series)

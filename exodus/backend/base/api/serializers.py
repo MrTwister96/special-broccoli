@@ -9,6 +9,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add Custom Claims
         token['username'] = user.username
+        token['permissions'] = user.profile.permissions
+        token['congregations'] = user.profile.congregations
 
         return token
 
