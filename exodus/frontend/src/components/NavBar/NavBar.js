@@ -126,29 +126,37 @@ const NavBar = () => {
                                                 leaveTo="transform opacity-0 scale-95"
                                             >
                                                 <Menu.Items className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                    <Menu.Item>
-                                                        {({ active }) => (
-                                                            <Button
-                                                                startIcon={
-                                                                    <AddIcon />
-                                                                }
-                                                                sx={{
-                                                                    color: "black",
-                                                                }}
-                                                                fullWidth
-                                                                className={classNames(
-                                                                    active
-                                                                        ? "bg-gray-100"
-                                                                        : "",
-                                                                    "block px-4 py-2 text-sm text-gray-700"
-                                                                )}
-                                                            >
-                                                                <Link to="/preek/skep">
-                                                                    Skep Preek
-                                                                </Link>
-                                                            </Button>
-                                                        )}
-                                                    </Menu.Item>
+                                                    {(user.permissions.includes(
+                                                        "sermon_admin"
+                                                    ) ||
+                                                        user.permissions.includes(
+                                                            "super_admin"
+                                                        )) && (
+                                                        <Menu.Item>
+                                                            {({ active }) => (
+                                                                <Button
+                                                                    startIcon={
+                                                                        <AddIcon />
+                                                                    }
+                                                                    sx={{
+                                                                        color: "black",
+                                                                    }}
+                                                                    fullWidth
+                                                                    className={classNames(
+                                                                        active
+                                                                            ? "bg-gray-100"
+                                                                            : "",
+                                                                        "block px-4 py-2 text-sm text-gray-700"
+                                                                    )}
+                                                                >
+                                                                    <Link to="/preek/skep">
+                                                                        Skep
+                                                                        Preek
+                                                                    </Link>
+                                                                </Button>
+                                                            )}
+                                                        </Menu.Item>
+                                                    )}
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <Button

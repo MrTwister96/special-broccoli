@@ -9,6 +9,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add Custom Claims
         token['username'] = user.username
+        token['permissions'] = user.profile.permissions
+        token['congregations'] = user.profile.congregations
 
         return token
 
@@ -26,12 +28,10 @@ class SermonSerializer(ModelSerializer):
 
     class Meta:
         model = models.Sermon
-        # fields = ["id", "preacher_label", "audio_file_size", "date", "theme", "scripture", "download_count", "congregation", "preacher", "series", "category"]
         fields = "__all__"
 
 class PreacherSerializer(ModelSerializer):
     label = CharField(source="__str__")
-    # sermons = SermonSerializer(many=True, read_only=True)
     class Meta:
         model = models.Preacher
         fields = "__all__"
@@ -40,14 +40,12 @@ class SeriesSerializer(ModelSerializer):
     label = CharField(source="getLabel")
     category_name = CharField(source="category")
     congregation_name = CharField(source="congregation")
-    # sermons = SermonSerializer(many=True, read_only=True)
     class Meta:
         model = models.Series
         fields = "__all__"
 
 class CongregationSerializer(ModelSerializer):
     label = CharField(source="name")
-    # sermons = SermonSerializer(many=True, read_only=True)
     preachers = PreacherSerializer(many=True, read_only=True)
     series = SeriesSerializer(many=True, read_only=True)
     class Meta:

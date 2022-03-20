@@ -66,7 +66,7 @@ const App = () => {
                     path="/preek/skep"
                     element={
                         <LocalizationProvider dateAdapter={DateAdapter}>
-                            <ProtectedRoute user={user}>
+                            <ProtectedRoute user={user} page={"new_sermon"}>
                                 <CreateSermonPage />
                             </ProtectedRoute>
                         </LocalizationProvider>
