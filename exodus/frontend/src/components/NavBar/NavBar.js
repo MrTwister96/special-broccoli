@@ -126,9 +126,12 @@ const NavBar = () => {
                                                 leaveTo="transform opacity-0 scale-95"
                                             >
                                                 <Menu.Items className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                    {user.permissions.includes(
+                                                    {(user.permissions.includes(
                                                         "sermon_admin"
-                                                    ) && (
+                                                    ) ||
+                                                        user.permissions.includes(
+                                                            "super_admin"
+                                                        )) && (
                                                         <Menu.Item>
                                                             {({ active }) => (
                                                                 <Button

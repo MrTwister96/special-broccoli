@@ -12,7 +12,8 @@ const ProtectedRoute = ({ user, page, children }) => {
             );
         } else if (
             page === "new_sermon" &&
-            !user.permissions.includes("sermon_admin")
+            !user.permissions.includes("sermon_admin") &&
+            !user.permissions.includes("super_admin")
         ) {
             raiseError(
                 "Jy het nie toestemming om hierdie bladsy te beskou nie"
@@ -25,7 +26,8 @@ const ProtectedRoute = ({ user, page, children }) => {
         return <Navigate to="/inteken" replace />;
     } else if (
         page === "new_sermon" &&
-        !user.permissions.includes("sermon_admin")
+        !user.permissions.includes("sermon_admin") &&
+        !user.permissions.includes("super_admin")
     ) {
         return <Navigate to="/" replace />;
     }

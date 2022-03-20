@@ -5,6 +5,7 @@ import axios from "axios";
 import useAxios from "../../hooks/useAxios";
 import NavigationContext from "../../context/NavigationContext";
 import StoreContext from "../../context/StoreContext";
+import AuthContext from "../../context/AuthContext";
 
 // UI
 import {
@@ -228,6 +229,7 @@ const bibleBooks = [
 const CreateSermonPage = () => {
     const { raiseError } = useContext(StoreContext);
     const { setAllLinksInactive } = useContext(NavigationContext);
+    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const api = useAxios();
 
@@ -295,7 +297,17 @@ const CreateSermonPage = () => {
                 let response = await axios.get(`${baseURL}/api/congregations`);
 
                 if (response.status === 200) {
-                    setCongregations(response.data);
+                    if (user.permissions.includes("super_admin")) {
+                        setCongregations(response.data);
+                    } else {
+                        let data = [];
+                        response.data.forEach((item) => {
+                            if (user.congregations.includes(item.id)) {
+                                data = [...data, item];
+                            }
+                        });
+                        setCongregations(data);
+                    }
                 }
             } catch (error) {
                 raiseError(
@@ -336,7 +348,9 @@ const CreateSermonPage = () => {
         };
 
         const initializePage = async () => {
-            await getCongregations();
+            if (user.congregations.length !== 0 || user.permissions.includes("super_admin")) {
+                await getCongregations();
+            }
             await getPreachers();
             await getCategories();
 
