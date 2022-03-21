@@ -40,6 +40,7 @@ class SeriesSerializer(ModelSerializer):
     label = CharField(source="getLabel")
     category_name = CharField(source="category")
     congregation_name = CharField(source="congregation")
+    preacher_name = CharField(source="preacher")
     class Meta:
         model = models.Series
         fields = "__all__"
