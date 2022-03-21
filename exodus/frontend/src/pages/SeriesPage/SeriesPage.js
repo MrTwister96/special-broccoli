@@ -40,6 +40,7 @@ const SeriesPage = () => {
 
         setLinkActive("Series");
         initialize();
+        // eslint-disable-next-line
     }, []);
 
     return (
