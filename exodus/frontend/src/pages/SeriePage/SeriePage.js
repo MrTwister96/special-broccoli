@@ -18,7 +18,7 @@ import { baseURL } from "../../hooks/useAxios";
 import dayjs from "dayjs";
 import notFound from "../../images/notFound.svg";
 
-const CongregationPage = () => {
+const SeriePage = () => {
     let { seriesId } = useParams();
     const navigate = useNavigate();
     const { raiseError } = useContext(StoreContext);
@@ -185,4 +185,4 @@ const CongregationPage = () => {
     );
 };
 
-export default CongregationPage;
+export default SeriePage;

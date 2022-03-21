@@ -9,7 +9,7 @@ import CreateSermonPage from "./pages/CreateSermonPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CongregationPage from "./pages/CongregationPage";
 import SermonPage from "./pages/SermonPage";
-import SeriesPage from "./pages/SeriesPage";
+import SeriePage from "./pages/SeriePage";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
@@ -61,7 +61,7 @@ const App = () => {
                 <Route path="/gemeentes" element={<CongregationsPage />} />
                 <Route path="/gemeente/:slug" element={<CongregationPage />} />
                 <Route path="/preke/:sermonId" element={<SermonPage />} />
-                <Route path="/reekse/:seriesId" element={<SeriesPage />} />
+                <Route path="/reekse/:seriesId" element={<SeriePage />} />
                 <Route
                     path="/preek/skep"
                     element={
