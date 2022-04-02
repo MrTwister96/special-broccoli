@@ -11,6 +11,12 @@ export const NavigationProvider = ({ children }) => {
             to: "/gemeentes",
             active: false,
         },
+        {
+            name: "Series",
+            label: "Reekse",
+            to: "/reekse",
+            active: false,
+        },
     ]);
 
     let setLinkActive = (pageName) => {

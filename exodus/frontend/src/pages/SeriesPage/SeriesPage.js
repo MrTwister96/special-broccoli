@@ -1,85 +1,93 @@
+// UI
 import React, { useContext, useEffect, useState } from "react";
-import NavBar from "../../components/NavBar";
 import {
     CssBaseline,
     CircularProgress,
-    Card,
-    CardContent,
-    Typography,
+    Backdrop,
     Container,
-    CardActionArea,
+    Typography,
     Grid,
+    Card,
+    CardActionArea,
+    CardContent,
 } from "@mui/material";
-import StoreContext from "../../context/StoreContext";
-import { useNavigate, useParams } from "react-router-dom";
+import notFound from "../../images/notFound.svg";
+//Components
+import NavBar from "../../components/NavBar";
 import PageHeading from "./PageHeading";
+// Functionality
 import axios from "axios";
 import { baseURL } from "../../hooks/useAxios";
-import dayjs from "dayjs";
-import notFound from "../../images/notFound.svg";
+// Context
+import NavigationContext from "../../context/NavigationContext";
+import StoreContext from "../../context/StoreContext";
+// Navigation
+import { useNavigate } from "react-router-dom";
 
-const CongregationPage = () => {
-    let { seriesId } = useParams();
-    const navigate = useNavigate();
+const SeriesPage = () => {
+    // Context Data
+    const { setLinkActive } = useContext(NavigationContext);
     const { raiseError } = useContext(StoreContext);
-    const [series, setSeries] = useState(null);
-    const [sermons, setSermons] = useState([]);
-    const [filteredSermons, setFilteredSermons] = useState([]);
+    // Functionality
     const [loading, setLoading] = useState(true);
+    // Serverside Information
+    const [series, setSeries] = useState(null);
+    const [filteredSeries, setFilteredSeries] = useState(null);
+    // Navigation
+    const navigate = useNavigate();
+
+    const getSeries = async () => {
+        try {
+            let response = await axios.get(`${baseURL}/api/series`);
+
+            setSeries(response.data);
+            setFilteredSeries(response.data);
+            console.log(response.data);
+            setLoading(false);
+        } catch (e) {
+            raiseError("Daar was n vout. probeer aseblief weer");
+            navigate("/");
+        }
+    };
 
     useEffect(() => {
         const initialize = async () => {
-            try {
-                let seriesResponse = await axios.get(
-                    `${baseURL}/api/series/${seriesId}`
-                );
-
-                setSeries(seriesResponse.data);
-
-                let sermonsResponse = await axios.get(
-                    `${baseURL}/api/series/${seriesId}/sermons`
-                );
-
-                setSermons(sermonsResponse.data);
-                setFilteredSermons(sermonsResponse.data);
-                setLoading(false);
-            } catch (error) {
-                if (error.response?.status === 404) {
-                    raiseError(
-                        `Geen reeks met id: ${seriesId}. Kies n reeks wat bestaan`
-                    );
-                } else {
-                    raiseError("Daar was n vout. probeer aseblief weer");
-                }
-                navigate("/");
-            }
+            await getSeries();
         };
 
+        setLinkActive("Series");
         initialize();
-
-        // I don't know why but the page scrolls to the middle
-        // after loading..
-        window.scrollTo(0, 0);
         // eslint-disable-next-line
     }, []);
 
-    const [searchParams] = useState(["theme", "scripture", "preacher_label"]);
+    const [searchParams] = useState([
+        "congregation_name",
+        "description",
+        "label",
+        "name",
+        "preacher_label",
+        "preacher_name",
+        "category_name",
+    ]);
 
     const search = (e) => {
         let searchValue = e.target.value;
 
-        let searchedItems = sermons.filter((item) => {
+        let searchedItems = series.filter((item) => {
+            // eslint-disable-next-line
             return searchParams.some((newItem) => {
-                return (
-                    item[newItem]
-                        .toString()
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) > -1
-                );
+                if (item[newItem] !== null) {
+                    return (
+                        item[newItem]
+                            .toString()
+                            .toLowerCase()
+                            .indexOf(searchValue.toLowerCase()) > -1
+                    );
+                }
             });
         });
 
-        setFilteredSermons(searchedItems);
+        setFilteredSeries(searchedItems);
     };
 
     return (
@@ -88,14 +96,22 @@ const CongregationPage = () => {
             <CssBaseline />
             <main>
                 {loading ? (
-                    <div className="min-h-screen justify-center items-center flex bg-gray-100 rounded-xl">
-                        <CircularProgress />
-                    </div>
+                    <Backdrop
+                        sx={{
+                            color: "#fff",
+                            zIndex: (theme) => theme.zIndex.drawer + 1,
+                            display: "flex",
+                            flexDirection: "column",
+                        }}
+                        open={loading}
+                    >
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
                 ) : (
                     <>
-                        <PageHeading series={series} search={search} />
+                        <PageHeading search={search} />
                         <Container maxWidth="lg" className="mt-5 mb-5 z-0">
-                            {filteredSermons.length === 0 ? (
+                            {series.length === 0 ? (
                                 <div className="justify-center flex flex-col my-5">
                                     <Typography
                                         component="h1"
@@ -112,7 +128,7 @@ const CongregationPage = () => {
                                 </div>
                             ) : (
                                 <Grid container spacing={4}>
-                                    {filteredSermons.map((item, index) => (
+                                    {filteredSeries.map((item, index) => (
                                         <Grid
                                             key={item.id}
                                             item
@@ -126,50 +142,53 @@ const CongregationPage = () => {
                                                     className="h-full"
                                                     onClick={() => {
                                                         navigate(
-                                                            `/preke/${item.id}`
+                                                            `/reekse/${item.id}`
                                                         );
                                                     }}
                                                 >
                                                     <CardContent className="h-full flex flex-col justify-between">
                                                         <Typography
-                                                            sx={{
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    "bold",
-                                                            }}
-                                                            color="text.secondary"
-                                                            gutterBottom
-                                                        >
-                                                            Boodskap{" "}
-                                                            {(index += 1)}/
-                                                            {sermons.length}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="h5"
+                                                            variant="h6"
                                                             component="div"
                                                             mb={2}
                                                         >
-                                                            {item.theme}
+                                                            {item.name}
                                                         </Typography>
-                                                        <Typography
-                                                            sx={{ mb: 1.5 }}
-                                                            color="text.secondary"
-                                                        >
-                                                            {dayjs(
-                                                                item.date
-                                                            ).format(
-                                                                "DD MMM YYYY HH:mm A"
-                                                            )}
-                                                        </Typography>
-                                                        <Typography variant="body2">
-                                                            Skriflesing:{" "}
-                                                            {item.scripture}
-                                                            <br />
-                                                            Prediker:{" "}
-                                                            {
-                                                                item.preacher_label
-                                                            }
-                                                        </Typography>
+                                                        {item.category_name ? (
+                                                            <Typography
+                                                                sx={{ mb: 1.5 }}
+                                                                color="text.secondary"
+                                                            >
+                                                                Kategorie:{" "}
+                                                                {
+                                                                    item.category_name
+                                                                }
+                                                            </Typography>
+                                                        ) : (
+                                                            <Typography
+                                                                sx={{ mb: 1.5 }}
+                                                                color="text.secondary"
+                                                            >
+                                                                Kategorie:
+                                                                Algemeen
+                                                            </Typography>
+                                                        )}
+                                                        {item.congregation_name && (
+                                                            <Typography variant="body2">
+                                                                Gemeente:{" "}
+                                                                {
+                                                                    item.congregation_name
+                                                                }
+                                                            </Typography>
+                                                        )}
+                                                        {item.preacher_label && (
+                                                            <Typography variant="body2">
+                                                                Prediker:{" "}
+                                                                {
+                                                                    item.preacher_label
+                                                                }
+                                                            </Typography>
+                                                        )}
                                                     </CardContent>
                                                 </CardActionArea>
                                             </Card>
@@ -185,4 +204,4 @@ const CongregationPage = () => {
     );
 };
 
-export default CongregationPage;
+export default SeriesPage;

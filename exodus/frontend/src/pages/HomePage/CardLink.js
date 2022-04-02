@@ -8,7 +8,7 @@ import { CardActionArea, Grid } from "@mui/material";
 const CardLink = ({ image, title, description, onClick }) => {
     return (
         <Grid item xs={12} sm={6} lg={4}>
-            <Card>
+            <Card className="min-h-full">
                 <CardActionArea onClick={onClick}>
                     <CardMedia
                         component="img"

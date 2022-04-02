@@ -29,7 +29,7 @@ const CongregationCard = ({ id, name, image, slug }) => {
                     component="img"
                     className="h-40"
                     image={image}
-                    alt="green iguana"
+                    alt={name}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">

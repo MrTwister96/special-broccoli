@@ -9,6 +9,7 @@ import CreateSermonPage from "./pages/CreateSermonPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CongregationPage from "./pages/CongregationPage";
 import SermonPage from "./pages/SermonPage";
+import SeriePage from "./pages/SeriePage";
 import SeriesPage from "./pages/SeriesPage";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -51,6 +52,17 @@ theme.typography.h5 = {
     },
 };
 
+theme.typography.h6 = {
+    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+    fontWeight: 400,
+    lineHeight: 1.334,
+    letterSpacing: "0em",
+    fontSize: "1.3rem",
+    [theme.breakpoints.up("sm")]: {
+        fontSize: "1.5rem",
+    },
+};
+
 const App = () => {
     const { user } = useContext(AuthContext);
 
@@ -61,7 +73,8 @@ const App = () => {
                 <Route path="/gemeentes" element={<CongregationsPage />} />
                 <Route path="/gemeente/:slug" element={<CongregationPage />} />
                 <Route path="/preke/:sermonId" element={<SermonPage />} />
-                <Route path="/reekse/:seriesId" element={<SeriesPage />} />
+                <Route path="/reekse" element={<SeriesPage />} />
+                <Route path="/reekse/:seriesId" element={<SeriePage />} />
                 <Route
                     path="/preek/skep"
                     element={
