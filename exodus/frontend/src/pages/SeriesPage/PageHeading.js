@@ -43,7 +43,7 @@ const PageHeading = ({ search }) => {
                         />
                         <TextField
                             fullWidth
-                            label="Soek Preek"
+                            label="Soek Reeks"
                             name="Soek"
                             variant="standard"
                             onChange={search}
