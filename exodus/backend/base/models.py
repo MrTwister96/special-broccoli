@@ -133,6 +133,12 @@ class Series(models.Model):
             label = f"{self.name} ({self.preacher.label()})"
         return label
 
+    def preacherName(self):
+        name = None
+        if self.preacher:
+            name = f"{self.preacher.label()}"
+        return name
+
 class Category(models.Model):
     name = models.CharField(verbose_name="Category Name", max_length=50)
     description = models.TextField(verbose_name="Category Description", max_length=1000)

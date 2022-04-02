@@ -1,7 +1,9 @@
 import React from "react";
-import { Box, Typography, Container } from "@mui/material";
+import { Box, Typography, Container, Stack, TextField } from "@mui/material";
 
-const PageHeading = () => {
+import SearchIcon from "@mui/icons-material/Search";
+
+const PageHeading = ({ search }) => {
     return (
         <Box
             sx={{
@@ -19,6 +21,35 @@ const PageHeading = () => {
                 >
                     Reekse
                 </Typography>
+                <Stack
+                    sx={{ mt: 5, mb: 4 }}
+                    direction="row"
+                    spacing={2}
+                    justifyContent="center"
+                >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "flex-end",
+                            minWidth: "80%",
+                        }}
+                    >
+                        <SearchIcon
+                            sx={{
+                                color: "action.active",
+                                mr: 1,
+                                my: 0.5,
+                            }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Soek Preek"
+                            name="Soek"
+                            variant="standard"
+                            onChange={search}
+                        />
+                    </Box>
+                </Stack>
             </Container>
         </Box>
     );
