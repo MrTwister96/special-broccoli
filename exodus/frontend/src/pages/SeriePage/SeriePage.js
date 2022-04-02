@@ -145,7 +145,7 @@ const SeriePage = () => {
                                                             {sermons.length}
                                                         </Typography>
                                                         <Typography
-                                                            variant="h5"
+                                                            variant="h6"
                                                             component="div"
                                                             mb={2}
                                                         >
