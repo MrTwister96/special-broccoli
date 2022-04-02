@@ -204,12 +204,21 @@ const SeriesSection = ({ congregationId }) => {
                                                                 );
                                                             }}
                                                         >
-                                                            <ListItemText
-                                                                primary={
-                                                                    item.name
-                                                                }
-                                                                secondary={`Kategorie: ${item.category_name}`}
-                                                            />
+                                                            {item.category_name ? (
+                                                                <ListItemText
+                                                                    primary={
+                                                                        item.name
+                                                                    }
+                                                                    secondary={`Kategorie: ${item.category_name}`}
+                                                                />
+                                                            ) : (
+                                                                <ListItemText
+                                                                    primary={
+                                                                        item.name
+                                                                    }
+                                                                />
+                                                            )}
+
                                                             <ListItemIcon className="justify-center">
                                                                 <LaunchIcon />
                                                             </ListItemIcon>
