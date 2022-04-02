@@ -52,6 +52,17 @@ theme.typography.h5 = {
     },
 };
 
+theme.typography.h6 = {
+    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+    fontWeight: 400,
+    lineHeight: 1.334,
+    letterSpacing: "0em",
+    fontSize: "1.3rem",
+    [theme.breakpoints.up("sm")]: {
+        fontSize: "1.5rem",
+    },
+};
+
 const App = () => {
     const { user } = useContext(AuthContext);
 
