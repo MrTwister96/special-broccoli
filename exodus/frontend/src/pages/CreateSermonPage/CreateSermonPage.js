@@ -289,85 +289,87 @@ const CreateSermonPage = () => {
     const [preachers, setPreachers] = useState(null);
     const [categories, setCategories] = useState(null);
 
+    const getCongregations = async () => {
+        try {
+            let response = await axios.get(`${baseURL}/api/congregations`);
+
+            if (response.status === 200) {
+                if (user.permissions.includes("super_admin")) {
+                    setCongregations(response.data);
+                } else {
+                    let data = [];
+                    response.data.forEach((item) => {
+                        if (user.congregations.includes(item.id)) {
+                            data = [...data, item];
+                        }
+                    });
+                    setCongregations(data);
+                }
+            }
+        } catch (error) {
+            raiseError("Daar was n vout. Probeer weer of raporteer die vout");
+            navigate("/");
+        }
+    };
+
+    const getPreachers = async () => {
+        try {
+            let response = await axios.get(`${baseURL}/api/preachers`);
+
+            if (response.status === 200) {
+                setPreachers(response.data);
+            }
+        } catch (error) {
+            raiseError("Daar was n vout. Probeer weer of raporteer die vout");
+            navigate("/");
+        }
+    };
+
+    const getCategories = async () => {
+        try {
+            let response = await axios.get(`${baseURL}/api/categories`);
+
+            if (response.status === 200) {
+                setCategories(response.data);
+            }
+        } catch (error) {
+            raiseError("Daar was n vout. Probeer weer of raporteer die vout");
+            navigate("/");
+        }
+    };
+
+    const getSeries = async () => {
+        let response = await axios.get(`${baseURL}/api/series`);
+        let items = [];
+
+        if (response.status === 200) {
+            response.data.forEach((item) => {
+                if (item.congregation === null) {
+                    items = [...items, item];
+                }
+            });
+
+            if (items.length !== 0) {
+                setSeries(items);
+            }
+        }
+    };
+
     // Initial Loading
     useEffect(() => {
         setAllLinksInactive();
-        const getCongregations = async () => {
-            try {
-                let response = await axios.get(`${baseURL}/api/congregations`);
-
-                if (response.status === 200) {
-                    if (user.permissions.includes("super_admin")) {
-                        setCongregations(response.data);
-                    } else {
-                        let data = [];
-                        response.data.forEach((item) => {
-                            if (user.congregations.includes(item.id)) {
-                                data = [...data, item];
-                            }
-                        });
-                        setCongregations(data);
-                    }
-                }
-            } catch (error) {
-                raiseError(
-                    "Daar was n vout. Probeer weer of raporteer die vout"
-                );
-                navigate("/");
-            }
-        };
-
-        const getPreachers = async () => {
-            try {
-                let response = await axios.get(`${baseURL}/api/preachers`);
-
-                if (response.status === 200) {
-                    setPreachers(response.data);
-                }
-            } catch (error) {
-                raiseError(
-                    "Daar was n vout. Probeer weer of raporteer die vout"
-                );
-                navigate("/");
-            }
-        };
-
-        const getCategories = async () => {
-            try {
-                let response = await axios.get(`${baseURL}/api/categories`);
-
-                if (response.status === 200) {
-                    setCategories(response.data);
-                }
-            } catch (error) {
-                raiseError(
-                    "Daar was n vout. Probeer weer of raporteer die vout"
-                );
-                navigate("/");
-            }
-        };
 
         const initializePage = async () => {
-            if (user.congregations.length !== 0 || user.permissions.includes("super_admin")) {
+            if (
+                user.congregations.length !== 0 ||
+                user.permissions.includes("super_admin")
+            ) {
                 await getCongregations();
             }
             await getPreachers();
             await getCategories();
+            await getSeries();
 
-            let response = await axios.get(`${baseURL}/api/series`);
-            let items = [];
-
-            if (response.status === 200) {
-                response.data.forEach((item) => {
-                    if (item.congregation === null) {
-                        items = [...items, item];
-                    }
-                });
-
-                if (items.length !== 0) {
-                    setSeries(items);
-                }
-            }
             setLoading(false);
         };
 
@@ -445,6 +447,15 @@ const CreateSermonPage = () => {
                         setSeries(null);
                     }
                 }
+            } catch (error) {
+                raiseError(
+                    "Daar was n vout. Probeer weer of raporteer die vout"
+                );
+                navigate("/");
+            }
+        } else {
+            try {
+                await getSeries();
             } catch (error) {
                 raiseError(
                     "Daar was n vout. Probeer weer of raporteer die vout"
