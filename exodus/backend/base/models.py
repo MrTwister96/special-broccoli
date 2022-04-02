@@ -130,7 +130,7 @@ class Series(models.Model):
         if self.congregation:
             label = f"{self.name} ({self.congregation.name})"
         elif self.preacher:
-            label = f"{self.name} ({self.preacher.label})"
+            label = f"{self.name} ({self.preacher.label()})"
         return label
 
 class Category(models.Model):
